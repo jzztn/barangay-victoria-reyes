@@ -9,7 +9,7 @@
     "lint": "next lint",
     "push": "prisma db push",
     "studio": "prisma studio",
-    "connect": "pscale connect barangay-victoria-reyes-management-system initial-setup --port 3309"
+    "connect": "pscale connect barangay-victoria-reyes-management-system development --port 3309"
   },
   "dependencies": {
     "@prisma/client": "^3.15.1",
