@@ -42,10 +42,10 @@ model User {
   email         String?    @unique
   emailVerified DateTime?
   image         String?
-  qualified     Boolean    @default(true)
+  authorized    Boolean    @default(true)
   accounts      Account[]
   sessions      Session[]
-  registrations Resident[]
+  records       Resident[]
 }
 
 model VerificationToken {
@@ -77,8 +77,8 @@ model Resident {
   with         Resident?     @relation("Related", fields: [withId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   withId       String?
   members      Resident[]    @relation("Related")
-  user         User?         @relation(fields: [userId], references: [id])
-  userId       String?
+  author       User?         @relation(fields: [authorId], references: [id])
+  authorId     String?
 }
 
 enum Gender {
