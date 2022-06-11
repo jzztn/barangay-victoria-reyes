@@ -42,7 +42,7 @@ model User {
   email         String?    @unique
   emailVerified DateTime?
   image         String?
-  permit        Boolean    @default(true)
+  qualified     Boolean    @default(true)
   accounts      Account[]
   sessions      Session[]
   registrations Resident[]
