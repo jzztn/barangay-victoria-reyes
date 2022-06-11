@@ -9,29 +9,76 @@ datasource db {
   referentialIntegrity = "prisma"
 }
 
-model Resident {
-  id         String     @id @default(cuid())
-  verified   Boolean    @default(false)
-  firstName  String
-  middleName String
-  lastName   String
-  gender     Gender
-  birthdate  DateTime
-  birthplace String
-  address    String
-  occupation String
-  contact    String
-  homeowner  Boolean
-  voter      Boolean
-  relation   Relation   @default(HEAD)
-  startedAt  DateTime
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  belongToId String?
-  belongTo   Resident?  @relation("BelongTo_Relatives", fields: [belongToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  relatives  Resident[] @relation("BelongTo_Relatives")
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
 
-  @@unique([firstName, middleName, lastName])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String     @id @default(cuid())
+  name          String?
+  email         String?    @unique
+  emailVerified DateTime?
+  image         String?
+  qualified     Boolean    @default(true)
+  accounts      Account[]
+  sessions      Session[]
+  registrations Resident[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Resident {
+  id           String        @id @default(cuid())
+  verified     Boolean       @default(false)
+  firstName    String
+  middleName   String
+  lastName     String
+  gender       Gender
+  birthdate    DateTime
+  birthplace   String
+  address      String
+  occupation   String
+  contact      String
+  homeowner    Boolean
+  voter        Boolean
+  relationship Relationship?
+  startedAt    DateTime
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  with         Resident?     @relation("Related", fields: [withId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  withId       String?
+  members      Resident[]    @relation("Related")
+  user         User?         @relation(fields: [userId], references: [id])
+  userId       String?
 }
 
 enum Gender {
@@ -40,8 +87,7 @@ enum Gender {
   OTHERS
 }
 
-enum Relation {
-  HEAD
+enum Relationship {
   FATHER
   MOTHER
   SON
