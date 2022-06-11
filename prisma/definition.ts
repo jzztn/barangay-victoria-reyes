@@ -1,10 +1,9 @@
 import { Prisma } from '@prisma/client'
 
-const user = Prisma.validator<Prisma.UserArgs>()({
+const resident = Prisma.validator<Prisma.ResidentArgs>()({
   include: {
-    profile: true,
-    records: true,
+    members: true,
   },
 })
 
-export type User = Prisma.UserGetPayload<typeof user>
+export type Record = Prisma.ResidentGetPayload<typeof resident>
