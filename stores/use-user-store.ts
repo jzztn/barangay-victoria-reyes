@@ -1,4 +1,3 @@
-import { Profile, Resident } from '@prisma/client'
 import create from 'zustand'
 import { User } from '../prisma/definition'
 
