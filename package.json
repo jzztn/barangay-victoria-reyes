@@ -12,6 +12,7 @@
     "connect": "pscale connect barangay-victoria-reyes-management-system development --port 3309"
   },
   "dependencies": {
+    "@heroicons/react": "^1.0.6",
     "@next-auth/prisma-adapter": "^1.0.3",
     "@prisma/client": "^3.15.1",
     "next": "12.1.6",
