@@ -33,7 +33,7 @@ const LadingPage: NextPage = () => {
     <LandingPageLayout>
       <Header>
         {/* mobile navbar */}
-        <div className="md:hidden">
+        <div className="lg:hidden">
           <NavigationBar fixed={false}>
             <Logo place="justify-start" />
             <MenuAlt3Icon
