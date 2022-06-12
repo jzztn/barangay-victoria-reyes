@@ -1,7 +1,7 @@
 import type { NextApiHandler } from 'next'
 import prisma from '../../../../../adapters/prisma'
 import type { Resident } from '@prisma/client'
-import { Record } from '../../../../../prisma/definition'
+import { Resident as Body } from '../../../../../prisma/definition'
 
 const handler: NextApiHandler = async (request, response) => {
   if (request.method !== 'POST') {
@@ -9,7 +9,7 @@ const handler: NextApiHandler = async (request, response) => {
   }
   try {
     const id = String(request.query.userId)
-    const body: Record = JSON.parse(request.body)
+    const body: Body = JSON.parse(request.body)
     const record: Resident = await prisma.resident.create({
       data: {
         authorId: id,

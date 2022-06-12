@@ -2,7 +2,6 @@ import type { GetServerSideProps, NextPage } from 'next'
 import { signOut } from 'next-auth/react'
 import prisma from '../../../adapters/prisma'
 import Layout from '../../../components/layout'
-import Test from '../../../components/test'
 import type { User } from '../../../prisma/definition'
 import serializeData from '../../../utilities/serialize-data'
 
@@ -13,7 +12,6 @@ interface Props {
 const User: NextPage<Props> = ({ user }) => {
   return (
     <Layout store={{ user }}>
-      <Test />
       <button onClick={() => signOut()}>Sign out</button>
     </Layout>
   )

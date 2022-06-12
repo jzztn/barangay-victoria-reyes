@@ -1,5 +1,5 @@
 import type { Profile } from '@prisma/client'
-import type { Record, User } from '../prisma/definition'
+import type { Resident, User } from '../prisma/definition'
 import create from 'zustand'
 
 interface UseUserStore {
@@ -10,11 +10,11 @@ interface UseUserStore {
     profile: (payload: { profile: Profile }) => void
   }
   create: {
-    record: (payload: { record: Record }) => void
+    record: (payload: { record: Resident }) => void
   }
 }
 
-const useUserStore = create<UseUserStore>((set) => ({
+const useUserStore = create<UseUserStore>((set, get) => ({
   user: null,
   profile: null,
   records: null,
@@ -25,14 +25,20 @@ const useUserStore = create<UseUserStore>((set) => ({
       set(({ user }) => ({ user: { ...user!, profile } })),
   },
   create: {
-    record: ({ record }) =>
+    record: async ({ record }) => {
       set(({ user }) => ({
         user: {
           ...user!,
           authorized: false,
           records: [...user!.records!, record],
         },
-      })),
+      }))
+      const { id } = get().user!
+      await fetch(`/api/users/${id}/records/create`, {
+        method: 'POST',
+        body: JSON.stringify(record),
+      })
+    },
   },
 }))
 

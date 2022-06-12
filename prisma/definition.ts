@@ -1,11 +1,4 @@
-import {
-  Account,
-  Gender,
-  Profile,
-  Relationship,
-  Resident,
-  Session,
-} from '@prisma/client'
+import { Account, Gender, Profile, Relationship, Session } from '@prisma/client'
 
 export interface User {
   id: string
@@ -16,11 +9,36 @@ export interface User {
   authorized: boolean
   accounts?: Account
   sessions?: Session
-  records?: Record[]
+  records?: Resident[]
   profile?: Profile
 }
 
-export interface Record {
+export interface Resident {
+  id: string
+  verified: boolean
+  firstName: string
+  middleName: string
+  lastName: string
+  gender: Gender
+  birthdate: string
+  birthplace: string
+  address: string
+  occupation: string
+  contact: string
+  homeowner: boolean
+  voter: boolean
+  relationship?: Relationship | null
+  startedAt: string
+  createdAt?: string
+  updatedAt?: string
+  with?: Resident
+  withId: string | null
+  members?: Member[]
+  author?: User
+  authorId: string
+}
+
+export interface Member {
   id: string
   verified: boolean
   firstName: string
@@ -39,7 +57,7 @@ export interface Record {
   createdAt?: string
   updatedAt?: string
   with?: Resident
-  withId: string | null
+  withId?: string | null
   members?: Resident[]
   author?: User
   authorId: string
