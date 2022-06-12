@@ -1,10 +1,11 @@
 interface IProps {
   label: string
   color: boolean
+  handler ? : any
 }
-const Button = ({ label, color }: IProps) => {
+const Button = ({ label, color, handler }: IProps) => {
   return (
-    <button
+    <button onClick={handler}
       className={`${
         color
           ? 'bg-primary/30 text-primary hover:-translate-y-1'
