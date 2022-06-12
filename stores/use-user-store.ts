@@ -23,10 +23,15 @@ const useUserStore = create<UseUserStore>((set, get) => ({
       set(({ user }) => ({ user: { ...user!, profile } })),
   },
   create: {
-    profile: ({ profile }) => {
+    profile: async ({ profile }) => {
       set(({ user }) => ({
         user: { ...user!, profile: profile },
       }))
+      const { id } = get().user!
+      await fetch(`/api/users/${id}/profile/create`, {
+        method: 'POST',
+        body: JSON.stringify(profile),
+      })
     },
     record: async ({ record }) => {
       set(({ user }) => ({
