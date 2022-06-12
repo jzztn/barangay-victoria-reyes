@@ -1,8 +1,8 @@
-import { Profile, User } from '@prisma/client'
+import type { Profile, User } from '@prisma/client'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { Record } from '../../prisma/definition'
+import type { Record } from '../../prisma/definition'
 import useUserStore from '../../stores/use-user-store'
 
 interface Props {
