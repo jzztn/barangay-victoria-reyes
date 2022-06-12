@@ -16,8 +16,6 @@ interface UseUserStore {
 
 const useUserStore = create<UseUserStore>((set, get) => ({
   user: null,
-  profile: null,
-  records: null,
   read: ({ user }) => set({ user }),
   unRead: () => set({ user: null }),
   update: {
