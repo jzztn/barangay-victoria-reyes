@@ -15,6 +15,7 @@ import Hero from '../components/section/hero'
 import Advantages from '../components/section/advantages'
 import How from '../components/section/how'
 import Sidebar from '../components/elements/sidebar'
+import Loading from '../components/section/loading'
 
 const LadingPage: NextPage = () => {
   const { data: session } = useSession()
@@ -26,7 +27,7 @@ const LadingPage: NextPage = () => {
     router.push(`/user/${String(session.user!.email!.split('@').at(0))}`)
   }, [session])
 
-  if (session !== null) return <>Loadin...</>
+  if (session !== null) return <Loading/>
 
   return (
     <LandingPageLayout>
