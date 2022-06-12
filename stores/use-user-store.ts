@@ -30,7 +30,7 @@ const useUserStore = create<UseUserStore>((set) => ({
         user: {
           ...user!,
           authorized: false,
-          records: [...user!.records, record],
+          records: [...user!.records!, record],
         },
       })),
   },
