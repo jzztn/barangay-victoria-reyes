@@ -4,7 +4,7 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import prisma from '../../../adapters/prisma'
 
 export default NextAuth({
-  secret: process.env.SECRET,
+  secret: process.env.NEXT_PUBLIC_SECRET,
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
