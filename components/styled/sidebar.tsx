@@ -26,8 +26,8 @@ const SideBar = ({ items }: IProps) => {
 
           {open && (
             <Menu.Items className="mt-20 grid gap-6 text-left">
-              {items.map((item) => (
-                <Menu.Item>
+              {items.map((item, index) => (
+                <Menu.Item key={index}>
                   {({ active }) => (
                     <a
                       href={item.link}
