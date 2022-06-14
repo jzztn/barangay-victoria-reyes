@@ -1,4 +1,4 @@
-import { Member, Resident } from '../../../prisma/definition'
+import { Member, Profile, Resident } from '../../../prisma/definition'
 import Icon from '../../elements/icon'
 
 interface IProps {
@@ -6,7 +6,7 @@ interface IProps {
   icon?: any
   type: string
   fieldName: string
-  inputField: Resident | Member
+  inputField: Resident | Member | Profile
   setInputField: any
   value: any
 }
@@ -40,7 +40,7 @@ const Field = ({
             <input
               type="text"
               className="border-[1px] border-gray/50 rounded-md py-2 w-full outline-none pl-4"
-              value={value}
+              defaultValue={value}
               onChange={(e) =>
                 setInputField({ ...inputField, [fieldName]: e.target.value })
               }
@@ -68,7 +68,7 @@ const Field = ({
             <input
               type="date"
               className="border-[1px] border-gray/50 rounded-md py-3 w-full outline-none bg-white pl-4"
-              value={value}
+              defaultValue={value}
               onChange={(e) =>
                 setInputField({ ...inputField, [fieldName]: e.target.value })
               }
