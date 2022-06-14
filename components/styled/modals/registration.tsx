@@ -9,14 +9,14 @@ import {
   MapIcon,
   PhoneIcon,
   HomeIcon,
-  ChevronDownIcon,
   CheckIcon,
 } from '@heroicons/react/solid'
-import Household from '../../section/input-fields/household'
-import { Resident, User } from '../../../prisma/definition'
+import { Resident } from '../../../prisma/definition'
 import useUserStore from '../../../stores/use-user-store'
-import { Gender, Relationship } from '@prisma/client'
-import Icon from '../../elements/icon'
+import { Gender } from '@prisma/client'
+import Members from '../../section/members'
+import Modal from '.'
+import Dropdown from '../dropdown'
 
 const Registration = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -43,12 +43,11 @@ const Registration = () => {
   })
 
   const [selectedGender, setSelectedGender] = useState(Gender.FEMALE)
+  const [genders] = useState(['MALE', 'FEMALE', 'OTHERS'])
 
   useEffect(() => {
     setInputField({ ...inputField, gender: selectedGender })
   }, [selectedGender])
-
-  console.log(inputField)
 
   return (
     <>
@@ -81,217 +80,163 @@ const Registration = () => {
         </span>
       </div>
 
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-        <div className="fixed inset-0 bg-black/30" />
-        <div className="fixed inset-0 md:max-w-xl lg:max-w-6xl mx-auto lg:my-16">
-          <Dialog.Panel className="bg-white h-full py-6 px-10 overflow-y-scroll grid gap-3">
-            <Dialog.Title className="font-semibold text-xl lg:text-2xl tracking-wide">
-              Registration Form
-            </Dialog.Title>
+      <Modal title="Registration Form" isOpen={isOpen} setIsOpen={setIsOpen}>
+        <Fields>
+          <div className="grid gap-6">
+            <Field
+              type="text"
+              label="First Name"
+              icon={UserIcon}
+              value={inputField.firstName}
+              inputField={inputField}
+              setInputField={setInputField}
+              fieldName="firstName"
+            />
+            <Field
+              type="text"
+              label="Middle Name"
+              icon={UserIcon}
+              value={inputField.middleName}
+              inputField={inputField}
+              setInputField={setInputField}
+              fieldName="middleName"
+            />
+            <Field
+              type="text"
+              label="Last Name"
+              icon={UserIcon}
+              value={inputField.lastName}
+              inputField={inputField}
+              setInputField={setInputField}
+              fieldName="lastName"
+            />
+            {/* gender */}
+            <div className="grid gap-2">
+              <h2 className="text-xs lg:text-sm font-medium tracking-wide">
+                Gender
+              </h2>
 
-            <Fields>
-              <div className="grid gap-6">
-                <Field
-                  type="text"
-                  label="First Name"
-                  icon={UserIcon}
-                  value={inputField.firstName}
-                  inputField={inputField}
-                  setInputField={setInputField}
-                  fieldName="firstName"
-                />
-                <Field
-                  type="text"
-                  label="Middle Name"
-                  icon={UserIcon}
-                  value={inputField.middleName}
-                  inputField={inputField}
-                  setInputField={setInputField}
-                  fieldName="middleName"
-                />
-                <Field
-                  type="text"
-                  label="Last Name"
-                  icon={UserIcon}
-                  value={inputField.lastName}
-                  inputField={inputField}
-                  setInputField={setInputField}
-                  fieldName="lastName"
-                />
-                {/* gender */}
-                <div className="grid gap-2">
-                  <h2 className="text-xs lg:text-sm font-medium tracking-wide">
-                    Gender
-                  </h2>
-
-                  <Listbox value={selectedGender} onChange={setSelectedGender}>
-                    <Listbox.Button className="border-[1px] border-gray/50 rounded-md p-3 text-left text-sm grid grid-cols-[1fr,auto] items-center">
-                      <span>{selectedGender}</span>
-                      <ChevronDownIcon className="w-5 h-5" />
-                    </Listbox.Button>
-                    <Listbox.Options className="border-[1px] border-gray/50 rounded-md text-left text-sm">
-                      <Listbox.Option
-                        className="hover:bg-primary/40 hover:text-primary text-sm cursor-pointer"
-                        value={Gender.FEMALE}
+              <Dropdown
+                value={selectedGender}
+                onChange={setSelectedGender}
+                buttonName={selectedGender}
+              >
+                {genders.map((gender, index) => (
+                  <Listbox.Option
+                    key={index}
+                    className="hover:bg-primary/40 hover:text-primary text-sm cursor-pointer"
+                    value={gender}
+                  >
+                    {({ active, selected }) => (
+                      <h3
+                        className={`${
+                          active ? 'bg-primary/40 text-primary' : 'text-black'
+                        } flex items-center gap-3 p-3`}
                       >
-                        {({ active, selected }) => (
-                          <h3
-                            className={`${
-                              active
-                                ? 'bg-primary/40 text-primary'
-                                : 'text-black'
-                            } flex items-center gap-3 p-3`}
-                          >
-                            {selected && (
-                              <CheckIcon className="bg-primary/30 rounded-full p-1 text-primary w-5 h-5" />
-                            )}
-                            {Gender.FEMALE}
-                          </h3>
+                        {selected && (
+                          <CheckIcon className="bg-primary/30 rounded-full p-1 text-primary w-5 h-5" />
                         )}
-                      </Listbox.Option>
-
-                      <Listbox.Option
-                        className="hover:bg-primary/40 hover:text-primary text-sm cursor-pointer"
-                        value={Gender.MALE}
-                      >
-                        {({ active, selected }) => (
-                          <h3
-                            className={`${
-                              active
-                                ? 'bg-primary/40 text-primary'
-                                : 'text-black'
-                            } flex items-center gap-3 p-3`}
-                          >
-                            {selected && (
-                              <CheckIcon className="bg-primary/30 rounded-full p-1 text-primary w-5 h-5" />
-                            )}
-                            {Gender.MALE}
-                          </h3>
-                        )}
-                      </Listbox.Option>
-
-                      <Listbox.Option
-                        className="hover:bg-primary/40 hover:text-primary text-sm cursor-pointer"
-                        value={Gender.OTHERS}
-                      >
-                        {({ active, selected }) => (
-                          <h3
-                            className={`${
-                              active
-                                ? 'bg-primary/40 text-primary'
-                                : 'text-black'
-                            } flex items-center gap-3 p-3`}
-                          >
-                            {selected && (
-                              <CheckIcon className="bg-primary/30 rounded-full p-1 text-primary w-5 h-5" />
-                            )}
-                            {Gender.OTHERS}
-                          </h3>
-                        )}
-                      </Listbox.Option>
-                    </Listbox.Options>
-                  </Listbox>
-                </div>
-                <Field
-                  type="text"
-                  label="Complete Address"
-                  icon={MapIcon}
-                  value={inputField.address}
-                  inputField={inputField}
-                  setInputField={setInputField}
-                  fieldName="address"
-                />
-                <Field
-                  type="date"
-                  label="Birthday"
-                  icon={CalendarIcon}
-                  value={inputField.birthdate}
-                  inputField={inputField}
-                  setInputField={setInputField}
-                  fieldName="birthdate"
-                />
-                <Field
-                  type="text"
-                  label="Birth Place"
-                  icon={UserIcon}
-                  value={inputField.birthplace}
-                  inputField={inputField}
-                  setInputField={setInputField}
-                  fieldName="birthplace"
-                />
-                <Field
-                  type="text"
-                  label="Contact Number"
-                  icon={PhoneIcon}
-                  value={inputField.contact}
-                  inputField={inputField}
-                  setInputField={setInputField}
-                  fieldName="contact"
-                />
-                <Field
-                  type="text"
-                  label="Occupation"
-                  icon={UserIcon}
-                  value={inputField.occupation}
-                  inputField={inputField}
-                  setInputField={setInputField}
-                  fieldName="occupation"
-                />
-                <Field
-                  type="date"
-                  label="In what year did you start living here?"
-                  icon={HomeIcon}
-                  value={inputField.startedAt}
-                  inputField={inputField}
-                  setInputField={setInputField}
-                  fieldName="startedAt"
-                />
-                <div className="flex gap-10">
-                  <Field
-                    type="checkbox"
-                    label="HomeOwner"
-                    value={inputField.homeowner}
-                    inputField={inputField}
-                    setInputField={setInputField}
-                    fieldName="homeowner"
-                  />
-                  <Field
-                    type="checkbox"
-                    label="Registered Voter"
-                    value={inputField.voter}
-                    inputField={inputField}
-                    setInputField={setInputField}
-                    fieldName="voter"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <Household
-                  inputField={inputField}
-                  setInputField={setInputField}
-                />
-              </div>
-            </Fields>
-
-            <div className="flex items-center gap-6 ml-auto">
-              <Button
-                label="Cancel"
-                color={false}
-                handler={() => setIsOpen(false)}
+                        {gender}
+                      </h3>
+                    )}
+                  </Listbox.Option>
+                ))}
+              </Dropdown>
+            </div>
+            <Field
+              type="text"
+              label="Complete Address"
+              icon={MapIcon}
+              value={inputField.address}
+              inputField={inputField}
+              setInputField={setInputField}
+              fieldName="address"
+            />
+            <Field
+              type="date"
+              label="Birthday"
+              icon={CalendarIcon}
+              value={inputField.birthdate}
+              inputField={inputField}
+              setInputField={setInputField}
+              fieldName="birthdate"
+            />
+            <Field
+              type="text"
+              label="Birth Place"
+              icon={UserIcon}
+              value={inputField.birthplace}
+              inputField={inputField}
+              setInputField={setInputField}
+              fieldName="birthplace"
+            />
+            <Field
+              type="text"
+              label="Contact Number"
+              icon={PhoneIcon}
+              value={inputField.contact}
+              inputField={inputField}
+              setInputField={setInputField}
+              fieldName="contact"
+            />
+            <Field
+              type="text"
+              label="Occupation"
+              icon={UserIcon}
+              value={inputField.occupation}
+              inputField={inputField}
+              setInputField={setInputField}
+              fieldName="occupation"
+            />
+            <Field
+              type="date"
+              label="In what year did you start living here?"
+              icon={HomeIcon}
+              value={inputField.startedAt}
+              inputField={inputField}
+              setInputField={setInputField}
+              fieldName="startedAt"
+            />
+            <div className="flex gap-10">
+              <Field
+                type="checkbox"
+                label="HomeOwner"
+                value={inputField.homeowner}
+                inputField={inputField}
+                setInputField={setInputField}
+                fieldName="homeowner"
               />
-              <Button
-                label="Register"
-                color={true}
-                handler={() => {
-                  createRecord({ record: inputField })
-                  console.log(inputField)
-                }}
+              <Field
+                type="checkbox"
+                label="Registered Voter"
+                value={inputField.voter}
+                inputField={inputField}
+                setInputField={setInputField}
+                fieldName="voter"
               />
             </div>
-          </Dialog.Panel>
+          </div>
+
+          {/* members */}
+          <div>
+            <Members inputField={inputField} setInputField={setInputField} />
+          </div>
+        </Fields>
+
+        {/* buttons */}
+        <div className="flex items-center gap-6 ml-auto">
+          <Button
+            label="Cancel"
+            color={false}
+            handler={() => setIsOpen(false)}
+          />
+          <Button
+            label="Register"
+            color={true}
+            handler={() => createRecord({ record: inputField })}
+          />
         </div>
-      </Dialog>
+      </Modal>
     </>
   )
 }
