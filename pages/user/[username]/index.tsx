@@ -20,19 +20,26 @@ interface Props {
 }
 
 const User: NextPage<Props> = ({ user }) => {
+  console.log(user.email.split('@')[0])
   return (
     <Layout store={{ user }}>
       <Header>
         {/* mobile navbar */}
         <div className="lg:hidden">
-          <NavigationBar fixed={true}>
+          <NavigationBar fixed={false}>
             <Logo place="justify-start" />
             <SideBar
               items={[
-                { name: 'Request', link: '#' },
-                { name: 'Notifications', link: '#' },
-                { name: 'Profile', link: '#' },
-                { name: 'Logout', link: '/' },
+                { name: 'Request', link: `/user/${user.email.split('@')[0]}`},
+                {
+                  name: 'Notifications',
+                  link: `/user/${user.email.split('@')[0]}/notifications`,
+                },
+                {
+                  name: 'Profile',
+                  link: `/user/${user.email.split('@')[0]}/profile`,
+                },
+                { name: 'Logout', link: '#' },
               ]}
             />
           </NavigationBar>
@@ -44,7 +51,7 @@ const User: NextPage<Props> = ({ user }) => {
             <Logo place="justify-start" />
             <NavLinks>
               <Name name={user.name} />
-              <Button label="Log Out" color={true} handler={() => signOut()}/>
+              <Button label="Log Out" color={true} handler={() => signOut()} />
             </NavLinks>
           </NavigationBar>
         </div>
@@ -53,7 +60,7 @@ const User: NextPage<Props> = ({ user }) => {
       <Main>
         {/* mobile */}
         <div className="lg:hidden">
-          <section className='h-full grid justify-center'>
+          <section className="h-full grid justify-center">
             <Registration />
           </section>
         </div>
@@ -61,8 +68,8 @@ const User: NextPage<Props> = ({ user }) => {
         {/* laptop */}
         <div className="hidden lg:block">
           <section className="h-full grid grid-cols-[auto,1fr] ">
-            <SidePanel image={user.image}/>
-            <Registration/>
+            <SidePanel image={user.image} name={user.email.split('@')[0]} />
+            <Registration />
           </section>
         </div>
       </Main>
