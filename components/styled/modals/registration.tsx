@@ -17,21 +17,23 @@ import { Gender } from '@prisma/client'
 import Members from '../../section/members'
 import Modal from '.'
 import Dropdown from '../dropdown'
-import { Router, useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 
 interface IProps {
   user: User
 }
 const Registration = ({ user }: IProps) => {
+  console.log(user.profile)
   const [isOpen, setIsOpen] = useState(false)
   const createRecord = useUserStore((state) => state.create.record)
+  const updateUserAuthorization = useUserStore((state) => state.update.user)
   const [inputField, setInputField] = useState<Resident>({
     id: '',
     verified: true,
     firstName: '',
     middleName: '',
     lastName: '',
-    gender: Gender.OTHERS,
+    gender: user.profile!.gender,
     birthdate: '',
     birthplace: '',
     address: '',
@@ -92,7 +94,7 @@ const Registration = ({ user }: IProps) => {
               type="text"
               label="First Name"
               icon={UserIcon}
-              value={inputField.firstName}
+              value={user.profile!.firstName}
               inputField={inputField}
               setInputField={setInputField}
               fieldName="firstName"
@@ -101,7 +103,7 @@ const Registration = ({ user }: IProps) => {
               type="text"
               label="Middle Name"
               icon={UserIcon}
-              value={inputField.middleName}
+              value={user.profile!.middleName}
               inputField={inputField}
               setInputField={setInputField}
               fieldName="middleName"
@@ -110,7 +112,7 @@ const Registration = ({ user }: IProps) => {
               type="text"
               label="Last Name"
               icon={UserIcon}
-              value={inputField.lastName}
+              value={user.profile!.lastName}
               inputField={inputField}
               setInputField={setInputField}
               fieldName="lastName"
@@ -161,7 +163,7 @@ const Registration = ({ user }: IProps) => {
               type="date"
               label="Birthday"
               icon={CalendarIcon}
-              value={inputField.birthdate}
+              value={user.profile!.birthdate}
               inputField={inputField}
               setInputField={setInputField}
               fieldName="birthdate"
@@ -179,7 +181,7 @@ const Registration = ({ user }: IProps) => {
               type="text"
               label="Contact Number"
               icon={PhoneIcon}
-              value={inputField.contact}
+              value={user.profile!.contact}
               inputField={inputField}
               setInputField={setInputField}
               fieldName="contact"
@@ -240,6 +242,7 @@ const Registration = ({ user }: IProps) => {
             color={true}
             handler={() => {
               createRecord({ record: inputField })
+              updateUserAuthorization({key:"authorized", value:false})
               router.push(`/user/(user/${user.email.split('@')[0]}`)
             }}
           />
