@@ -11,14 +11,18 @@ import {
   HomeIcon,
   CheckIcon,
 } from '@heroicons/react/solid'
-import { Resident } from '../../../prisma/definition'
+import { Resident, User } from '../../../prisma/definition'
 import useUserStore from '../../../stores/use-user-store'
 import { Gender } from '@prisma/client'
 import Members from '../../section/members'
 import Modal from '.'
 import Dropdown from '../dropdown'
+import { Router, useRouter } from 'next/router'
 
-const Registration = () => {
+interface IProps {
+  user: User
+}
+const Registration = ({ user }: IProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const createRecord = useUserStore((state) => state.create.record)
   const [inputField, setInputField] = useState<Resident>({
@@ -44,6 +48,7 @@ const Registration = () => {
 
   const [selectedGender, setSelectedGender] = useState(Gender.FEMALE)
   const [genders] = useState(['MALE', 'FEMALE', 'OTHERS'])
+  const router = useRouter()
 
   useEffect(() => {
     setInputField({ ...inputField, gender: selectedGender })
@@ -233,7 +238,10 @@ const Registration = () => {
           <Button
             label="Register"
             color={true}
-            handler={() => createRecord({ record: inputField })}
+            handler={() => {
+              createRecord({ record: inputField })
+              router.push(`/user/(user/${user.email.split('@')[0]}`)
+            }}
           />
         </div>
       </Modal>
