@@ -8,7 +8,6 @@ import Layout from '../../../components/layout'
 import Header from '../../../components/layout/header'
 import Main from '../../../components/layout/main'
 import Fields from '../../../components/section/input-fields'
-import Field from '../../../components/section/input-fields/field'
 import NavigationBar from '../../../components/section/navbar'
 import NavLinks from '../../../components/section/navbar/nav-links'
 import SidePanel from '../../../components/section/side-panel'
@@ -17,22 +16,22 @@ import type { Profile, User } from '../../../prisma/definition'
 import serializeData from '../../../utilities/serialize-data'
 import {
   UserIcon,
-  CalendarIcon,
-  PhoneIcon,
   CheckIcon,
+  PencilAltIcon,
 } from '@heroicons/react/solid'
 import { useState } from 'react'
 import { Gender } from '@prisma/client'
 import useUserStore from '../../../stores/use-user-store'
 import Dropdown from '../../../components/styled/dropdown'
 import { Listbox } from '@headlessui/react'
+import ProfileField from '../../../components/section/profileField'
+import moment from 'moment'
 
 interface Props {
   user: User
 }
 
 const Profile: NextPage<Props> = ({ user }) => {
-  console.log('profile ' + user.profile)
   const createProfile = useUserStore((state) => state.create.profile)
   const [inputField, setInputField] = useState<Profile>({
     id: '',
@@ -47,6 +46,8 @@ const Profile: NextPage<Props> = ({ user }) => {
   })
   const [selectedGender, setSelectedGender] = useState(Gender.FEMALE)
   const [genders] = useState(['MALE', 'FEMALE', 'OTHERS'])
+  const [edit, setEdit] = useState(false)
+
   return (
     <Layout store={{ user }}>
       <Header>
@@ -56,7 +57,7 @@ const Profile: NextPage<Props> = ({ user }) => {
             <Logo place="justify-start" />
             <SideBar
               items={[
-                { name: 'Request', link: `/user` },
+                { name: 'Request', link: `/user/${user.email.split('@')[0]}` },
                 {
                   name: 'Notifications',
                   link: `/user/${user.email.split('@')[0]}/notifications`,
@@ -87,36 +88,63 @@ const Profile: NextPage<Props> = ({ user }) => {
         <section className="h-full grid lg:grid-cols-[auto,1fr]">
           <SidePanel image={user.image} name={user.email.split('@')[0]} />
           <section className="flex flex-col gap-3 px-10 py-7">
-            <h1 className="font-semibold tracking-wide">Profile Account</h1>
+            <div className="flex gap-3 items-clientSecret ">
+              <h1 className="font-semibold tracking-wide">Profile Account</h1>
+              <PencilAltIcon
+                className="w-5 h-5 hover:-translate-y-1 hover:text-primary cursor-pointer transition-all duration-300"
+                onClick={() => setEdit(true)}
+              />
+            </div>
             <Fields>
               <div className="flex flex-col gap-6">
-                <Field
-                  type="text"
-                  label="First Name"
+                <ProfileField
                   icon={UserIcon}
-                  value={inputField.firstName}
                   inputField={inputField}
                   setInputField={setInputField}
-                  fieldName="firstName"
+                  user={user}
+                  value={inputField.firstName}
+                  defaultValue={user.profile ? user.profile.firstName : user.name.split(" ").slice(0,-1).join(" ")}
+                  field="firstName"
                 />
 
-                <Field
-                  type="text"
-                  label="Middle Name"
+                <ProfileField
                   icon={UserIcon}
-                  value={inputField.middleName}
                   inputField={inputField}
                   setInputField={setInputField}
-                  fieldName="middleName"
-                />
-                <Field
-                  type="text"
-                  label="Last Name"
-                  icon={UserIcon}
+                  user={user}
                   value={inputField.lastName}
+                  defaultValue={user.profile ? user.profile.lastName : user.name.split(" ").slice(-1).join(" ")}
+                  field="lastName"
+                />
+
+                <ProfileField
+                  icon={UserIcon}
                   inputField={inputField}
                   setInputField={setInputField}
-                  fieldName="lastName"
+                  user={user}
+                  value={inputField.middleName}
+                  defaultValue={user.profile ? user.profile.middleName : ""}
+                  field="middleName"
+                />
+
+                <ProfileField
+                  icon={UserIcon}
+                  inputField={inputField}
+                  setInputField={setInputField}
+                  user={user}
+                  value={inputField.contact}
+                  defaultValue={user.profile ? user.profile.contact : ""}
+                  field="contact"
+                />
+
+                <ProfileField
+                  icon={UserIcon}
+                  inputField={inputField}
+                  setInputField={setInputField}
+                  user={user}
+                  value={inputField.birthdate}
+                  defaultValue={user.profile ? moment(user.profile.birthdate).format('LL') : ""}
+                  field="birthdate"
                 />
 
                 {/* gender */}
@@ -154,25 +182,6 @@ const Profile: NextPage<Props> = ({ user }) => {
                     ))}
                   </Dropdown>
                 </div>
-                <Field
-                  type="date"
-                  label="Birthday"
-                  icon={CalendarIcon}
-                  value={inputField.birthdate}
-                  inputField={inputField}
-                  setInputField={setInputField}
-                  fieldName="birthdate"
-                />
-
-                <Field
-                  type="text"
-                  label="Contact Number"
-                  icon={PhoneIcon}
-                  value={inputField.contact}
-                  inputField={inputField}
-                  setInputField={setInputField}
-                  fieldName="contact"
-                />
               </div>
             </Fields>
 
