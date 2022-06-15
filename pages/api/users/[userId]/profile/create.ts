@@ -12,6 +12,7 @@ const handler: NextApiHandler = async (request, response) => {
   try {
     const id = String(request.query.userId)
     const body: Body = JSON.parse(request.body)
+    console.log(body)
     const profile: Profile = await prisma.profile.create({
       data: {
         userId: id,
@@ -19,7 +20,7 @@ const handler: NextApiHandler = async (request, response) => {
         middleName: body.middleName,
         lastName: body.lastName,
         gender: body.gender,
-        birthdate: body.birthdate,
+        birthdate: new Date(body.birthdate),
         contact: body.contact,
       },
     })
