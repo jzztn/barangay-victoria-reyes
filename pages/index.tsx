@@ -22,7 +22,7 @@ const LadingPage: NextPage = () => {
 
   useEffect(() => {
     if (!session) return
-    router.push(`/user/${String(session.user!.email!.split('@').at(0))}`)
+    router.push(`/user/${String(session.user!.email!.split('@').at(0))}/profile`)
   }, [session])
 
   if (session !== null) return <Loading/>
