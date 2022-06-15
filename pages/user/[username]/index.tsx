@@ -9,6 +9,7 @@ import Header from '../../../components/layout/header'
 import Main from '../../../components/layout/main'
 import NavigationBar from '../../../components/section/navbar'
 import NavLinks from '../../../components/section/navbar/nav-links'
+import RequestDocuments from '../../../components/section/request'
 import SidePanel from '../../../components/section/side-panel'
 import Registration from '../../../components/styled/modals/registration'
 import SideBar from '../../../components/styled/sidebar'
@@ -20,7 +21,7 @@ interface Props {
 }
 
 const User: NextPage<Props> = ({ user }) => {
-  console.log(user.email.split('@')[0])
+  console.log(user.authorized)
   return (
     <Layout store={{ user }}>
       <Header>
@@ -30,7 +31,7 @@ const User: NextPage<Props> = ({ user }) => {
             <Logo place="justify-start" />
             <SideBar
               items={[
-                { name: 'Request', link: `/user/${user.email.split('@')[0]}`},
+                { name: 'Request', link: `/user/${user.email.split('@')[0]}` },
                 {
                   name: 'Notifications',
                   link: `/user/${user.email.split('@')[0]}/notifications`,
@@ -58,20 +59,12 @@ const User: NextPage<Props> = ({ user }) => {
       </Header>
 
       <Main>
-        {/* mobile */}
-        <div className="lg:hidden">
-          <section className="h-full grid justify-center">
-            <Registration />
+        <section className="h-full grid lg:grid-cols-[auto,1fr]">
+          <SidePanel image={user.image} name={user.email.split('@')[0]} />
+          <section className="grid justify-center items-center">
+            {user.authorized ? <Registration user={user} /> : <RequestDocuments />}
           </section>
-        </div>
-
-        {/* laptop */}
-        <div className="hidden lg:block">
-          <section className="h-full grid grid-cols-[auto,1fr] ">
-            <SidePanel image={user.image} name={user.email.split('@')[0]} />
-            <Registration />
-          </section>
-        </div>
+        </section>
       </Main>
     </Layout>
   )

@@ -19,7 +19,7 @@ const useUserStore = create<UseUserStore>((set, get) => ({
   read: ({ user }) => set({ user }),
   unRead: () => set({ user: null }),
   update: {
-    profile: ({ profile }) =>
+    profile: ({ profile }) => 
       set(({ user }) => ({ user: { ...user!, profile } })),
   },
   create: {
