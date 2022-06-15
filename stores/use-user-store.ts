@@ -1,17 +1,18 @@
-import type { Profile, Resident, User } from '../prisma/definition'
-import create from 'zustand'
+import type { Profile, Resident, User } from "../prisma/definition";
+import create from "zustand";
 
 interface UseUserStore {
-  user: User | null
-  read: (payload: { user: User }) => void
-  unRead: () => void
+  user: User | null;
+  read: (payload: { user: User }) => void;
+  unRead: () => void;
   update: {
-    profile: (payload: { profile: Profile }) => void
-  }
+    user: (payload: { key: "authorized"; value: boolean }) => void;
+    profile: (payload: { profile: Profile }) => void;
+  };
   create: {
-    profile: (payload: { profile: Profile }) => void
-    record: (payload: { record: Resident }) => void
-  }
+    profile: (payload: { profile: Profile }) => void;
+    record: (payload: { record: Resident }) => void;
+  };
 }
 
 const useUserStore = create<UseUserStore>((set, get) => ({
@@ -19,19 +20,25 @@ const useUserStore = create<UseUserStore>((set, get) => ({
   read: ({ user }) => set({ user }),
   unRead: () => set({ user: null }),
   update: {
+<<<<<<< HEAD
     profile: ({ profile }) => 
+=======
+    user: ({ key, value }) =>
+      set(({ user }) => ({ user: { ...user!, [key]: value } })),
+    profile: ({ profile }) =>
+>>>>>>> 415a269c65ed1758afecf00fa69e0961cba806b5
       set(({ user }) => ({ user: { ...user!, profile } })),
   },
   create: {
     profile: async ({ profile }) => {
       set(({ user }) => ({
         user: { ...user!, profile: profile },
-      }))
-      const { id } = get().user!
+      }));
+      const { id } = get().user!;
       await fetch(`/api/users/${id}/profile/create`, {
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify(profile),
-      })
+      });
     },
     record: async ({ record }) => {
       set(({ user }) => ({
@@ -40,14 +47,14 @@ const useUserStore = create<UseUserStore>((set, get) => ({
           authorized: false,
           records: [...user!.records!, record],
         },
-      }))
-      const { id } = get().user!
+      }));
+      const { id } = get().user!;
       await fetch(`/api/users/${id}/records/create`, {
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify(record),
-      })
+      });
     },
   },
-}))
+}));
 
-export default useUserStore
+export default useUserStore;
