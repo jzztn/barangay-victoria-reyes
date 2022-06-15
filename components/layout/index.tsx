@@ -25,7 +25,7 @@ const Layout = ({ children, store }: Props) => {
     useUserStore.getState().unRead()
   }, [session])
 
-  return session && user && <div className="h-screen">{children}</div>
+  return session && user && <div className="h-screen grid grid-rows-[auto,1fr,auto]">{children}</div>
 }
 
 export default Layout

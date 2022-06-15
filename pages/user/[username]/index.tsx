@@ -1,8 +1,17 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { signOut } from 'next-auth/react'
 import prisma from '../../../adapters/prisma'
+import Name from '../../../components/elements/account-name'
 import Button from '../../../components/elements/button'
+import Logo from '../../../components/elements/logo'
 import Layout from '../../../components/layout'
+import Header from '../../../components/layout/header'
+import Main from '../../../components/layout/main'
+import NavigationBar from '../../../components/section/navbar'
+import NavLinks from '../../../components/section/navbar/nav-links'
+import SidePanel from '../../../components/section/side-panel'
+import Registration from '../../../components/styled/modals/registration'
+import SideBar from '../../../components/styled/sidebar'
 import type { User } from '../../../prisma/definition'
 import serializeData from '../../../utilities/serialize-data'
 
@@ -11,17 +20,59 @@ interface Props {
 }
 
 const User: NextPage<Props> = ({ user }) => {
+  console.log(user.email.split('@')[0])
   return (
     <Layout store={{ user }}>
-      <div className="fixed inset-0">
-        <div className='border-gray/50 border-[1px] py-3 px-6 grid justify-items-center gap-3 text-center'>
-          <div className='w-14 h-14 rounded-full overflow-hidden'>
-            <img src={user.image} alt="user" className='w-full h-full' />
-          </div>
-          <h2 className='font-medium tracking-wide'>{user.name}</h2>
-          <Button label="Sign Out" color={true} handler={() => signOut()}/>
+      <Header>
+        {/* mobile navbar */}
+        <div className="lg:hidden">
+          <NavigationBar fixed={false}>
+            <Logo place="justify-start" />
+            <SideBar
+              items={[
+                { name: 'Request', link: `/user/${user.email.split('@')[0]}`},
+                {
+                  name: 'Notifications',
+                  link: `/user/${user.email.split('@')[0]}/notifications`,
+                },
+                {
+                  name: 'Profile',
+                  link: `/user/${user.email.split('@')[0]}/profile`,
+                },
+                { name: 'Logout', link: '#' },
+              ]}
+            />
+          </NavigationBar>
         </div>
-      </div>
+
+        {/* laptop navbar */}
+        <div className="hidden lg:block">
+          <NavigationBar fixed={false}>
+            <Logo place="justify-start" />
+            <NavLinks>
+              <Name name={user.name} />
+              <Button label="Log Out" color={true} handler={() => signOut()} />
+            </NavLinks>
+          </NavigationBar>
+        </div>
+      </Header>
+
+      <Main>
+        {/* mobile */}
+        <div className="lg:hidden">
+          <section className="h-full grid justify-center">
+            <Registration />
+          </section>
+        </div>
+
+        {/* laptop */}
+        <div className="hidden lg:block">
+          <section className="h-full grid grid-cols-[auto,1fr] ">
+            <SidePanel image={user.image} name={user.email.split('@')[0]} />
+            <Registration />
+          </section>
+        </div>
+      </Main>
     </Layout>
   )
 }
