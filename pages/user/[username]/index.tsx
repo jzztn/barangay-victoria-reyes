@@ -21,7 +21,7 @@ interface Props {
 }
 
 const User: NextPage<Props> = ({ user }) => {
-  console.log(user.authorized)
+  console.log(user.email.split('@')[0])
   return (
     <Layout store={{ user }}>
       <Header>
