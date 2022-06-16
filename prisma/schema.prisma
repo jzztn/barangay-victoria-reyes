@@ -55,6 +55,7 @@ model User {
   sessions      Session[]
   records       Resident[]
   profile       Profile?
+  tickets       Ticket[]
 }
 
 model Profile {
@@ -95,6 +96,15 @@ model Resident {
   authorId     String?
 }
 
+model Ticket {
+  id       String   @id @default(cuid())
+  type     String
+  status   Status   @default(PENDING)
+  createAt DateTime @default(now())
+  user     User     @relation(fields: [userId], references: [id])
+  userId   String
+}
+
 enum Gender {
   MALE
   FEMALE
@@ -122,4 +132,14 @@ enum Relationship {
   BOYFRIEND
   GIRLFRIEND
   OTHERS
+}
+
+enum Status {
+  PENDING
+  APPROVED
+  PAYMENT
+  PROCESSING
+  READY
+  CLOSED
+  REJECTED
 }
