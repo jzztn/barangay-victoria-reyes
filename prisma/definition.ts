@@ -1,4 +1,4 @@
-import { Account, Gender, Relationship, Session } from "@prisma/client";
+import { Account, Gender, Relationship, Session, Ticket } from "@prisma/client";
 
 export interface User {
   id: string;
