@@ -21,7 +21,7 @@ const Members = ({ inputField, setInputField }: IProps) => {
     middleName: '',
     lastName: '',
     gender: Gender.OTHERS,
-    birthdate: '',
+    birthdate: new Date(),
     birthplace: '',
     address: '',
     occupation: '',
@@ -29,9 +29,7 @@ const Members = ({ inputField, setInputField }: IProps) => {
     homeowner: true,
     voter: true,
     relationship: Relationship.BROTHER,
-    startedAt: '',
-    withId: null,
-    members: [],
+    startedAt: new Date(),
     authorId: '',
   })
   const [selectedRelationship, setSelectedRelationship] = useState(
@@ -165,7 +163,7 @@ const Members = ({ inputField, setInputField }: IProps) => {
                 middleName: '',
                 lastName: '',
                 gender: Gender.OTHERS,
-                birthdate: '',
+                birthdate: new Date(),
                 birthplace: '',
                 address: '',
                 occupation: '',
@@ -174,8 +172,6 @@ const Members = ({ inputField, setInputField }: IProps) => {
                 voter: true,
                 relationship: Relationship.BROTHER,
                 startedAt: '',
-                withId: null,
-                members: [],
                 authorId: '',
               })
             }}
