@@ -1,5 +1,6 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { signOut } from 'next-auth/react'
+import { useState } from 'react'
 import prisma from '../../../adapters/prisma'
 import Name from '../../../components/elements/account-name'
 import Button from '../../../components/elements/button'
@@ -26,6 +27,10 @@ interface Props {
 }
 
 const Notifications: NextPage<Props> = ({ user }) => {
+
+  const [selected, setSelected] = useState(false)
+
+  console.log(user)
   return (
     <Layout store={{ user }}>
       <Header>
@@ -43,6 +48,10 @@ const Notifications: NextPage<Props> = ({ user }) => {
                 {
                   name: 'Profile',
                   link: `/user/${user.email.split('@')[0]}/profile`,
+                },
+                {
+                  name: 'Payment',
+                  link: `/user/${user.email.split('@')[0]}/payment`,
                 },
                 { name: 'Logout', link: '#' },
               ]}
@@ -67,7 +76,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
           <SidePanel image={user.image} name={user.email.split('@')[0]} />
           <section className="grid grid-rows-[auto,auto,auto,1fr] gap-8 px-10 py-7">
             <h1 className="font-semibold tracking-wide">Notifications</h1>
-            <SearchSection />
+            <SearchSection setSelected={setSelected} selected={selected}/>
 
             {/* notification count */}
             <h4 className="text-xs lg:text-sm font-medium">
@@ -78,6 +87,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
             <Table>
               {/* headers */}
               <div className="grid grid-flow-col items-center">
+              {selected && <span className='text-sm font-medium'>Check All</span>}
                 <TableHeader name="Full Name" />
                 <TableHeader name="Type" />
                 <TableHeader name="Request Date" />
@@ -88,6 +98,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
               {/* row */}
               <div className="flex flex-col gap-2">
                 <TableRows>
+                {selected && <input type="checkbox"/>}
                   <TableRow name="Jazztine Cruz" />
                   <TableRow name="Clearance Certificate" />
                   <TableRow name="September 12, 2022" />
@@ -97,69 +108,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
                 </TableRows>
 
                 <TableRows>
-                  <TableRow name="Jazztine Cruz" />
-                  <TableRow name="Clearance Certificate" />
-                  <TableRow name="September 12, 2022" />
-                  <div className="ml-auto">
-                    <TableStatus status="Approved" />
-                  </div>
-                </TableRows>
-
-                <TableRows>
-                  <TableRow name="Jazztine Cruz" />
-                  <TableRow name="Clearance Certificate" />
-                  <TableRow name="September 12, 2022" />
-                  <div className="ml-auto">
-                    <TableStatus status="Approved" />
-                  </div>
-                </TableRows>
-
-                <TableRows>
-                  <TableRow name="Jazztine Cruz" />
-                  <TableRow name="Clearance Certificate" />
-                  <TableRow name="September 12, 2022" />
-                  <div className="ml-auto">
-                    <TableStatus status="Approved" />
-                  </div>
-                </TableRows>
-
-                <TableRows>
-                  <TableRow name="Jazztine Cruz" />
-                  <TableRow name="Clearance Certificate" />
-                  <TableRow name="September 12, 2022" />
-                  <div className="ml-auto">
-                    <TableStatus status="Approved" />
-                  </div>
-                </TableRows>
-
-                <TableRows>
-                  <TableRow name="Jazztine Cruz" />
-                  <TableRow name="Clearance Certificate" />
-                  <TableRow name="September 12, 2022" />
-                  <div className="ml-auto">
-                    <TableStatus status="Approved" />
-                  </div>
-                </TableRows>
-
-                <TableRows>
-                  <TableRow name="Jazztine Cruz" />
-                  <TableRow name="Clearance Certificate" />
-                  <TableRow name="September 12, 2022" />
-                  <div className="ml-auto">
-                    <TableStatus status="Approved" />
-                  </div>
-                </TableRows>
-
-                <TableRows>
-                  <TableRow name="Jazztine Cruz" />
-                  <TableRow name="Clearance Certificate" />
-                  <TableRow name="September 12, 2022" />
-                  <div className="ml-auto">
-                    <TableStatus status="Approved" />
-                  </div>
-                </TableRows>
-
-                <TableRows>
+                {selected && <input type="checkbox"/>}
                   <TableRow name="Jazztine Cruz" />
                   <TableRow name="Clearance Certificate" />
                   <TableRow name="September 12, 2022" />

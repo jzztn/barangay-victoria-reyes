@@ -40,6 +40,10 @@ const User: NextPage<Props> = ({ user }) => {
                   name: 'Profile',
                   link: `/user/${user.email.split('@')[0]}/profile`,
                 },
+                {
+                  name: 'Payment',
+                  link: `/user/${user.email.split('@')[0]}/payment`,
+                },
                 { name: 'Logout', link: '#' },
               ]}
             />
