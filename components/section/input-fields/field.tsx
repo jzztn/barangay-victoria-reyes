@@ -40,7 +40,7 @@ const Field = ({
             <input
               type="text"
               className="border-[1px] border-gray/50 rounded-md py-2 w-full outline-none pl-4"
-              defaultValue={value}
+              value={value}
               onChange={(e) =>
                 setInputField({ ...inputField, [fieldName]: e.target.value })
               }
@@ -84,7 +84,7 @@ const Field = ({
             className="border-[1px] border-gray/50 rounded-md py-3 w-full outline-none bg-white"
             value={value}
             onChange={(e) =>
-              setInputField({ ...inputField, [fieldName]: e.target.value })
+              setInputField({ ...inputField, [fieldName]: e.target.checked })
             }
           />
           <h2 className="text-xs lg:text-sm font-medum tracking-wide whitespace-nowrap">
