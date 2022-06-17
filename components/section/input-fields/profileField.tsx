@@ -9,7 +9,7 @@ interface IProps {
   defaultValue: string
   value: string
   field: string
-  edit: boolean
+  edit:boolean
 }
 const ProfileField = ({
   user,
@@ -36,7 +36,7 @@ const ProfileField = ({
         />
 
         {edit ? (
-          <>
+          <div>
             {user.profile !== null ? (
               // edit is true and theres alreadt have a profile
               <input
@@ -61,9 +61,9 @@ const ProfileField = ({
                 <span className='text-red-500 text-xs italic mt-1'>Fill up this field first</span>
               </div>
             )}
-          </>
+          </div>
         ) : (
-          <>
+          <div>
             {user.profile !== null ? (
               // edit is false and theres already have a profile
               <input
@@ -85,7 +85,7 @@ const ProfileField = ({
                 className="w-96 py-3 pl-4"
               />
             )}
-          </>
+          </div>
         )}
       </div>
     </div>
