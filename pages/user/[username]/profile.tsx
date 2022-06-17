@@ -14,17 +14,13 @@ import SidePanel from '../../../components/section/side-panel'
 import SideBar from '../../../components/styled/sidebar'
 import type { Profile, User } from '../../../prisma/definition'
 import serializeData from '../../../utilities/serialize-data'
-import {
-  UserIcon,
-  CheckIcon,
-  PencilAltIcon,
-} from '@heroicons/react/solid'
+import { UserIcon, CheckIcon, PencilAltIcon } from '@heroicons/react/solid'
 import { useState } from 'react'
 import { Gender } from '@prisma/client'
 import useUserStore from '../../../stores/use-user-store'
 import Dropdown from '../../../components/styled/dropdown'
 import { Listbox } from '@headlessui/react'
-import ProfileField from '../../../components/section/profileField'
+import ProfileField from '../../../components/section/input-fields/profileField'
 import moment from 'moment'
 
 interface Props {
@@ -33,6 +29,7 @@ interface Props {
 
 const Profile: NextPage<Props> = ({ user }) => {
   const createProfile = useUserStore((state) => state.create.profile)
+  const updateProfile = useUserStore((state) => state.update.profile)
   const [inputField, setInputField] = useState<Profile>({
     id: '',
     firstName: '',
@@ -90,10 +87,9 @@ const Profile: NextPage<Props> = ({ user }) => {
           <section className="flex flex-col gap-3 px-10 py-7">
             <div className="flex gap-3 items-clientSecret ">
               <h1 className="font-semibold tracking-wide">Profile Account</h1>
-              <PencilAltIcon
-                className="w-5 h-5 hover:-translate-y-1 hover:text-primary cursor-pointer transition-all duration-300"
-                onClick={() => setEdit(true)}
-              />
+              <button onClick={() => setEdit(!edit)}>
+                <PencilAltIcon className="w-5 h-5 hover:-translate-y-1 hover:text-primary cursor-pointer transition-all duration-300" />
+              </button>
             </div>
             <Fields>
               <div className="flex flex-col gap-6">
@@ -103,8 +99,13 @@ const Profile: NextPage<Props> = ({ user }) => {
                   setInputField={setInputField}
                   user={user}
                   value={inputField.firstName}
-                  defaultValue={user.profile ? user.profile.firstName : user.name.split(" ").slice(0,-1).join(" ")}
+                  defaultValue={
+                    user.profile
+                      ? user.profile.firstName
+                      : user.name.split(' ').slice(0, -1).join(' ')
+                  }
                   field="firstName"
+                  edit={edit}
                 />
 
                 <ProfileField
@@ -113,8 +114,13 @@ const Profile: NextPage<Props> = ({ user }) => {
                   setInputField={setInputField}
                   user={user}
                   value={inputField.lastName}
-                  defaultValue={user.profile ? user.profile.lastName : user.name.split(" ").slice(-1).join(" ")}
+                  defaultValue={
+                    user.profile
+                      ? user.profile.lastName
+                      : user.name.split(' ').slice(-1).join(' ')
+                  }
                   field="lastName"
+                  edit={edit}
                 />
 
                 <ProfileField
@@ -123,8 +129,9 @@ const Profile: NextPage<Props> = ({ user }) => {
                   setInputField={setInputField}
                   user={user}
                   value={inputField.middleName}
-                  defaultValue={user.profile ? user.profile.middleName : ""}
+                  defaultValue={user.profile ? user.profile.middleName : ''}
                   field="middleName"
+                  edit={edit}
                 />
 
                 <ProfileField
@@ -133,8 +140,9 @@ const Profile: NextPage<Props> = ({ user }) => {
                   setInputField={setInputField}
                   user={user}
                   value={inputField.contact}
-                  defaultValue={user.profile ? user.profile.contact : ""}
+                  defaultValue={user.profile ? user.profile.contact : ''}
                   field="contact"
+                  edit={edit}
                 />
 
                 <ProfileField
@@ -143,8 +151,13 @@ const Profile: NextPage<Props> = ({ user }) => {
                   setInputField={setInputField}
                   user={user}
                   value={inputField.birthdate}
-                  defaultValue={user.profile ? moment(user.profile.birthdate).format('LL') : ""}
+                  defaultValue={
+                    user.profile
+                      ? moment(user.profile.birthdate).format('LL')
+                      : ''
+                  }
                   field="birthdate"
+                  edit={edit}
                 />
 
                 {/* gender */}
@@ -186,14 +199,26 @@ const Profile: NextPage<Props> = ({ user }) => {
             </Fields>
 
             <div className="mt-16">
-              <Button
-                label="Create Profile Account"
-                color={true}
-                handler={() => {
-                  createProfile({ profile: inputField })
-                  console.log(inputField)
-                }}
-              />
+              {edit ? (
+                <Button
+                  label="Save Changes"
+                  color={true}
+                  handler={() => {
+                    updateProfile({ profile: inputField })
+                    setEdit(false)
+                    console.log("edited" , inputField)
+                  }}
+                />
+              ) : (
+                <Button
+                  label="Create Profile Account"
+                  color={true}
+                  handler={() => {
+                    createProfile({ profile: inputField })
+                    console.log(inputField)
+                  }}
+                />
+              )}
             </div>
           </section>
         </section>
