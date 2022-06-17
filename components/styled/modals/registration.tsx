@@ -243,7 +243,7 @@ const Registration = ({ user }: IProps) => {
             handler={() => {
               createRecord({ record: inputField })
               updateUserAuthorization({key:"authorized", value:false})
-              router.push(`/user/(user/${user.email.split('@')[0]}`)
+              router.push(`/user/${user.email.split('@')[0]}`)
             }}
           />
         </div>
