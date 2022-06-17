@@ -30,9 +30,9 @@ const Registration = ({ user }: IProps) => {
   const [inputField, setInputField] = useState<Resident>({
     id: '',
     verified: true,
-    firstName: '',
-    middleName: '',
-    lastName: '',
+    firstName: user.profile!.firstName,
+    middleName: user.profile!.middleName,
+    lastName: user.profile!.lastName,
     gender: user.profile!.gender,
     birthdate: '',
     birthplace: '',
@@ -94,7 +94,7 @@ const Registration = ({ user }: IProps) => {
               type="text"
               label="First Name"
               icon={UserIcon}
-              value={user.profile!.firstName}
+              value={inputField.firstName}
               inputField={inputField}
               setInputField={setInputField}
               fieldName="firstName"
@@ -103,7 +103,7 @@ const Registration = ({ user }: IProps) => {
               type="text"
               label="Middle Name"
               icon={UserIcon}
-              value={user.profile!.middleName}
+              value={inputField.middleName}
               inputField={inputField}
               setInputField={setInputField}
               fieldName="middleName"
@@ -112,7 +112,7 @@ const Registration = ({ user }: IProps) => {
               type="text"
               label="Last Name"
               icon={UserIcon}
-              value={user.profile!.lastName}
+              value={inputField.lastName}
               inputField={inputField}
               setInputField={setInputField}
               fieldName="lastName"
