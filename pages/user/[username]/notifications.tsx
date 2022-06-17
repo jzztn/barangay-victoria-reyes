@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client'
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { signOut } from 'next-auth/react'
 import { useState } from 'react'
@@ -27,9 +28,7 @@ interface Props {
 }
 
 const Notifications: NextPage<Props> = ({ user }) => {
-
   const [selected, setSelected] = useState(false)
-
   console.log(user)
   return (
     <Layout store={{ user }}>
@@ -76,18 +75,21 @@ const Notifications: NextPage<Props> = ({ user }) => {
           <SidePanel image={user.image} name={user.email.split('@')[0]} />
           <section className="grid grid-rows-[auto,auto,auto,1fr] gap-8 px-10 py-7">
             <h1 className="font-semibold tracking-wide">Notifications</h1>
-            <SearchSection setSelected={setSelected} selected={selected}/>
+            <SearchSection />
 
             {/* notification count */}
             <h4 className="text-xs lg:text-sm font-medium">
               ALL ( <span className="font-bold">20</span> )
             </h4>
 
+
             {/* table */}
             <Table>
               {/* headers */}
               <div className="grid grid-flow-col items-center">
-              {selected && <span className='text-sm font-medium'>Check All</span>}
+                {selected && (
+                  <span className="text-sm font-medium">Check All</span>
+                )}
                 <TableHeader name="Full Name" />
                 <TableHeader name="Type" />
                 <TableHeader name="Request Date" />
@@ -98,7 +100,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
               {/* row */}
               <div className="flex flex-col gap-2">
                 <TableRows>
-                {selected && <input type="checkbox"/>}
+                  {selected && <input type="checkbox" />}
                   <TableRow name="Jazztine Cruz" />
                   <TableRow name="Clearance Certificate" />
                   <TableRow name="September 12, 2022" />
@@ -108,7 +110,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
                 </TableRows>
 
                 <TableRows>
-                {selected && <input type="checkbox"/>}
+                  {selected && <input type="checkbox" />}
                   <TableRow name="Jazztine Cruz" />
                   <TableRow name="Clearance Certificate" />
                   <TableRow name="September 12, 2022" />
@@ -136,8 +138,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         where: { withId: null },
         include: { members: true },
       },
+      tickets:true
     },
   })
+  
   return {
     props: {
       user: serializeData(user),
