@@ -42,7 +42,7 @@ export interface Resident {
   homeowner: boolean;
   voter: boolean;
   relationship?: Relationship | null;
-  startedAt: string;
+  startedAt: string | Date;
   createdAt?: string;
   updatedAt?: string;
   with?: Resident;
@@ -59,7 +59,7 @@ export interface Member {
   middleName: string;
   lastName: string;
   gender: Gender;
-  birthdate: string;
+  birthdate: string | Date;
   birthplace: string;
   address: string;
   occupation: string;
@@ -67,7 +67,7 @@ export interface Member {
   homeowner: boolean;
   voter: boolean;
   relationship: Relationship | null;
-  startedAt: string;
+  startedAt: string | Date;
   createdAt?: string;
   updatedAt?: string;
   with?: Resident;
