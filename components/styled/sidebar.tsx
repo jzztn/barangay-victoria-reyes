@@ -1,5 +1,6 @@
 import { Menu } from '@headlessui/react'
 import { ChevronDoubleRightIcon, MenuAlt3Icon } from '@heroicons/react/solid'
+import Link from 'next/link'
 
 interface IProps {
   items: {
@@ -9,7 +10,7 @@ interface IProps {
 }
 const SideBar = ({ items }: IProps) => {
   return (
-    <Menu as="div" className="absolute -top-1 right-0 bg-white">
+    <Menu as="div" className="absolute -top-1 right-0 bg-white z-50">
       {({ open }) => (
         <div
           className={`p-6 ${
@@ -27,18 +28,19 @@ const SideBar = ({ items }: IProps) => {
           {open && (
             <Menu.Items className="mt-20 grid gap-6 text-left">
               {items.map((item, index) => (
-                <Menu.Item key={index}>
-                  {({ active }) => (
-                    <a
-                      href={item.link}
-                      className={`${
-                        active ? 'bg-primary/30 text-primary' : 'text-black'
-                      } text-sm font-medium tracking-wide cursor-pointer py-2 px-5 md:px-6 rounded-md transition-all duration-300`}
-                    >
-                      {item.name}
-                    </a>
-                  )}
-                </Menu.Item>
+                <Link href={item.link}>
+                  <Menu.Item key={index}>
+                    {({ active }) => (
+                      <a
+                        className={`${
+                          active ? 'bg-primary/30 text-primary' : 'text-black'
+                        } text-sm font-medium tracking-wide cursor-pointer py-2 px-5 md:px-6 rounded-md transition-all duration-300`}
+                      >
+                        {item.name}
+                      </a>
+                    )}
+                  </Menu.Item>
+                </Link>
               ))}
             </Menu.Items>
           )}

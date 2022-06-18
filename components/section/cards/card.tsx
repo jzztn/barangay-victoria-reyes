@@ -13,7 +13,7 @@ const Card = ({ title, paragraph, request }: IProps) => {
       <p className="text-sm leading-relaxed md:max-w-lg text-gray">{paragraph}</p>
       
       {request && <div>
-        <Button label="Request" color={true} />
+        <Button label="Request" color={true}/>
       </div>}
 
       <div className='w-0 h-1 bg-primary mt-5 rounded-full group-hover:w-full transition-all ease-in-out duration-700 cursor-pointer'></div>
