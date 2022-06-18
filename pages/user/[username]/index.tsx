@@ -1,27 +1,27 @@
-import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
-import { signOut } from 'next-auth/react'
-import prisma from '../../../adapters/prisma'
-import Name from '../../../components/elements/account-name'
-import Button from '../../../components/elements/button'
-import Logo from '../../../components/elements/logo'
-import Layout from '../../../components/layout'
-import Header from '../../../components/layout/header'
-import Main from '../../../components/layout/main'
-import NavigationBar from '../../../components/section/navbar'
-import NavLinks from '../../../components/section/navbar/nav-links'
-import RequestDocuments from '../../../components/section/request'
-import SidePanel from '../../../components/section/side-panel'
-import Registration from '../../../components/styled/modals/registration'
-import SideBar from '../../../components/styled/sidebar'
-import type { User } from '../../../prisma/definition'
-import serializeData from '../../../utilities/serialize-data'
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import { signOut } from "next-auth/react";
+import prisma from "../../../adapters/prisma";
+import Name from "../../../components/elements/account-name";
+import Button from "../../../components/elements/button";
+import Logo from "../../../components/elements/logo";
+import Layout from "../../../components/layout";
+import Header from "../../../components/layout/header";
+import Main from "../../../components/layout/main";
+import NavigationBar from "../../../components/section/navbar";
+import NavLinks from "../../../components/section/navbar/nav-links";
+import RequestDocuments from "../../../components/section/request";
+import SidePanel from "../../../components/section/side-panel";
+import Registration from "../../../components/styled/modals/registration";
+import SideBar from "../../../components/styled/sidebar";
+import type { User } from "../../../prisma/definition";
+import serializeData from "../../../utilities/serialize-data";
 
 interface Props {
-  user: User
+  user: User;
 }
 
 const User: NextPage<Props> = ({ user }) => {
-  console.log(user.email.split('@')[0])
+  console.log(user.email.split("@")[0]);
   return (
     <Layout store={{ user }}>
       <Header>
@@ -31,16 +31,16 @@ const User: NextPage<Props> = ({ user }) => {
             <Logo place="justify-start" />
             <SideBar
               items={[
-                { name: 'Request', link: `/user/${user.email.split('@')[0]}` },
+                { name: "Request", link: `/user/${user.email.split("@")[0]}` },
                 {
-                  name: 'Notifications',
-                  link: `/user/${user.email.split('@')[0]}/notifications`,
+                  name: "Notifications",
+                  link: `/user/${user.email.split("@")[0]}/notifications`,
                 },
                 {
-                  name: 'Profile',
-                  link: `/user/${user.email.split('@')[0]}/profile`,
+                  name: "Profile",
+                  link: `/user/${user.email.split("@")[0]}/profile`,
                 },
-                { name: 'Logout', link: '#' },
+                { name: "Logout", link: "#" },
               ]}
             />
           </NavigationBar>
@@ -60,17 +60,21 @@ const User: NextPage<Props> = ({ user }) => {
 
       <Main>
         <section className="h-full grid lg:grid-cols-[auto,1fr]">
-          <SidePanel image={user.image} name={user.email.split('@')[0]} />
+          <SidePanel image={user.image} name={user.email.split("@")[0]} />
           <section className="grid justify-center items-center">
-            {user.authorized ? <Registration user={user} /> : <RequestDocuments />}
+            {user.authorized ? (
+              <Registration user={user} />
+            ) : (
+              <RequestDocuments />
+            )}
           </section>
         </section>
       </Main>
     </Layout>
-  )
-}
+  );
+};
 
-export default User
+export default User;
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const user = await prisma.user.findUnique({
@@ -82,13 +86,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         include: { members: true },
       },
     },
-  })
+  });
   return {
     props: {
       user: serializeData(user),
     },
-  }
-}
+  };
+};
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const users = await prisma.user.findMany({
@@ -99,16 +103,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
         include: { members: true },
       },
     },
-  })
+  });
 
   const paths = users.map((user) => {
     return {
-      params: { username: String(user.email!.split('@')[0]) },
-    }
-  })
+      params: { username: String(user.email!.split("@")[0]) },
+    };
+  });
 
   return {
     paths,
-    fallback: 'blocking',
-  }
-}
+    fallback: "blocking",
+  };
+};

@@ -11,7 +11,7 @@ export interface User {
   sessions?: Session;
   records?: Resident[];
   profile?: Profile;
-  ticket?: Ticket[];
+  tickets?: Ticket[];
 }
 
 export interface Profile {

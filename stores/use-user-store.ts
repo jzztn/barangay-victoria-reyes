@@ -1,5 +1,6 @@
 import type { Profile, Resident, User } from "../prisma/definition";
 import create from "zustand";
+import { Ticket } from "@prisma/client";
 
 interface UseUserStore {
   user: User | null;
@@ -12,6 +13,7 @@ interface UseUserStore {
   create: {
     profile: (payload: { profile: Profile }) => void;
     record: (payload: { record: Resident }) => void;
+    ticket: (payload: { ticket: Ticket }) => void;
   };
 }
 
@@ -20,10 +22,16 @@ const useUserStore = create<UseUserStore>((set, get) => ({
   read: ({ user }) => set({ user }),
   unRead: () => set({ user: null }),
   update: {
-    user: ({ key, value }) =>
+    user: async ({ key, value }) =>
       set(({ user }) => ({ user: { ...user!, [key]: value } })),
-    profile: ({ profile }) =>
-      set(({ user }) => ({ user: { ...user!, profile } })),
+    profile: async ({ profile }) => {
+      const { id } = get().user!;
+      set(({ user }) => ({ user: { ...user!, profile } }));
+      await fetch(`/api/users/${id}/profile/update`, {
+        method: "PUT",
+        body: JSON.stringify(profile),
+      });
+    },
   },
   create: {
     profile: async ({ profile }) => {
@@ -48,6 +56,20 @@ const useUserStore = create<UseUserStore>((set, get) => ({
       await fetch(`/api/users/${id}/records/create`, {
         method: "POST",
         body: JSON.stringify(record),
+      });
+    },
+    ticket: async ({ ticket }) => {
+      set(({ user }) => ({
+        user: {
+          ...user!,
+          authorized: false,
+          tickets: [...user!.tickets!, ticket],
+        },
+      }));
+      const { id } = get().user!;
+      await fetch(`/api/users/${id}/ticket/create`, {
+        method: "POST",
+        body: JSON.stringify(ticket),
       });
     },
   },
