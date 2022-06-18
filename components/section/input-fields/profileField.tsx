@@ -45,7 +45,7 @@ const ProfileField = ({
                 onChange={(e) =>
                   setInputField({ ...inputField, [field]: e.target.value })
                 }
-                className="w-96 py-3 pl-4 bg-primary/40"
+                className="w-72 lg:w-96 py-3 pl-4 "
               />
             ) : (
               // edit is true and theres no profile yet
@@ -56,7 +56,7 @@ const ProfileField = ({
                   onChange={(e) =>
                     setInputField({ ...inputField, [field]: e.target.value })
                   }
-                  className="w-96 py-3 pl-4"
+                  className="w-72 lg:w-96 py-3 pl-4"
                 />
                 <span className='text-red-500 text-xs italic mt-1'>Fill up this field first</span>
               </div>
@@ -72,7 +72,7 @@ const ProfileField = ({
                 onChange={(e) =>
                   setInputField({ ...inputField, [field]: e.target.value })
                 }
-                className="w-96 py-3 pl-4 outline-none bg-yellow-500"
+                className="w-72 lg:w-96 py-3 pl-4 outline-none"
               />
             ) : (
               // edit is false and theres no profile yet
@@ -82,7 +82,7 @@ const ProfileField = ({
                 onChange={(e) =>
                   setInputField({ ...inputField, [field]: e.target.value })
                 }
-                className="w-96 py-3 pl-4"
+                className="w-72 lg:w-96 py-3 pl-4"
               />
             )}
           </div>
