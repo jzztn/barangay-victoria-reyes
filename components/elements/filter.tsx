@@ -3,25 +3,33 @@ import { CheckIcon } from '@heroicons/react/solid'
 import { useState } from 'react'
 import Dropdown from '../styled/dropdown'
 
-const Filter = () => {
-  const [selectedCategory, setSelectedCategory] = useState('All')
+interface IProps {
+  placeholder: string
+  setPlaceholder: any
+}
+const Filter = ({ placeholder, setPlaceholder }: IProps) => {
   const [categories] = useState([
+    'clearance certificate',
     'cedula',
     'barangay certificate',
-    'clearance certificate',
     'certificate of indigency',
+    'approved',
+    'declined',
+    'pending',
+    'processing',
   ])
   return (
     <Dropdown
-      value={selectedCategory}
-      onChange={setSelectedCategory}
-      buttonName={selectedCategory}
+      value={placeholder}
+      onChange={setPlaceholder}
+      buttonName={placeholder}
     >
       {categories.map((category, index) => (
         <Listbox.Option
           key={index}
           className="hover:bg-primary/40 hover:text-primary text-sm cursor-pointer"
           value={category}
+          onClick={() => setPlaceholder(category)}
         >
           {({ active, selected }) => (
             <h3
@@ -32,7 +40,7 @@ const Filter = () => {
               {selected && (
                 <CheckIcon className="bg-primary/30 rounded-full p-1 text-primary w-5 h-5" />
               )}
-              {category}
+              {category[0].toUpperCase() + category.slice(1)}
             </h3>
           )}
         </Listbox.Option>

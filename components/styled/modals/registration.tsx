@@ -23,16 +23,15 @@ interface IProps {
   user: User
 }
 const Registration = ({ user }: IProps) => {
-  console.log(user.profile)
   const [isOpen, setIsOpen] = useState(false)
   const createRecord = useUserStore((state) => state.create.record)
   const updateUserAuthorization = useUserStore((state) => state.update.user)
   const [inputField, setInputField] = useState<Resident>({
     id: '',
     verified: true,
-    firstName: '',
-    middleName: '',
-    lastName: '',
+    firstName: user.profile!.firstName,
+    middleName: user.profile!.middleName,
+    lastName: user.profile!.lastName,
     gender: user.profile!.gender,
     birthdate: '',
     birthplace: '',
@@ -94,7 +93,7 @@ const Registration = ({ user }: IProps) => {
               type="text"
               label="First Name"
               icon={UserIcon}
-              value={user.profile!.firstName}
+              value={inputField.firstName}
               inputField={inputField}
               setInputField={setInputField}
               fieldName="firstName"
@@ -103,7 +102,7 @@ const Registration = ({ user }: IProps) => {
               type="text"
               label="Middle Name"
               icon={UserIcon}
-              value={user.profile!.middleName}
+              value={inputField.middleName}
               inputField={inputField}
               setInputField={setInputField}
               fieldName="middleName"
@@ -112,7 +111,7 @@ const Registration = ({ user }: IProps) => {
               type="text"
               label="Last Name"
               icon={UserIcon}
-              value={user.profile!.lastName}
+              value={inputField.lastName}
               inputField={inputField}
               setInputField={setInputField}
               fieldName="lastName"
@@ -243,7 +242,7 @@ const Registration = ({ user }: IProps) => {
             handler={() => {
               createRecord({ record: inputField })
               updateUserAuthorization({key:"authorized", value:false})
-              router.push(`/user/(user/${user.email.split('@')[0]}`)
+              router.push(`/user/${user.email.split('@')[0]}`)
             }}
           />
         </div>
