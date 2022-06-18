@@ -23,7 +23,6 @@ interface IProps {
   user: User
 }
 const Registration = ({ user }: IProps) => {
-  console.log(user.profile)
   const [isOpen, setIsOpen] = useState(false)
   const createRecord = useUserStore((state) => state.create.record)
   const updateUserAuthorization = useUserStore((state) => state.update.user)
