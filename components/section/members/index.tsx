@@ -104,6 +104,15 @@ const Members = ({ inputField, setInputField }: IProps) => {
             fieldName="contact"
           />
 
+          <Field
+            type="text"
+            label="Birth Place"
+            value={memberField.birthplace}
+            inputField={memberField}
+            setInputField={setMemberField}
+            fieldName="birthplace"
+          />
+
           {/* relationship */}
           <div className="grid gap-2 w-full ">
             <h2 className="text-xs lg:text-sm font-medium tracking-wide">
