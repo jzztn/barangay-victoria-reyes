@@ -37,11 +37,11 @@ const Registration = ({ user }: IProps) => {
     birthplace: '',
     address: '',
     occupation: '',
-    contact: '',
+    contact: user.profile!.contact,
     homeowner: true,
     voter: true,
     relationship: null,
-    startedAt: '',
+    startedAt: new Date(),
     withId: null,
     members: [],
     authorId: '',
@@ -240,8 +240,9 @@ const Registration = ({ user }: IProps) => {
             label="Register"
             color={true}
             handler={() => {
-              createRecord({ record: inputField })
               updateUserAuthorization({key:"authorized", value:false})
+              createRecord({ record: inputField })
+              setIsOpen(false)
               router.push(`/user/${user.email.split('@')[0]}`)
             }}
           />
