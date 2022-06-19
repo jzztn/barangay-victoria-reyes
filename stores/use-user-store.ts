@@ -37,8 +37,14 @@ const useUserStore = create<UseUserStore>((set, get) => ({
   read: ({ user }) => set({ user }),
   unRead: () => set({ user: null }),
   update: {
-    user: ({ key, value }) =>
-      set(({ user }) => ({ user: { ...user!, [key]: value } })),
+    user: async ({ key, value }) => {
+      set(({ user }) => ({ user: { ...user!, [key]: value } }))
+      const { id } = get().user!
+      await fetch(`/api/users/${id}/update`, {
+        method: 'PUT',
+        body: JSON.stringify({ key, value }),
+      })
+    },
     profile: async ({ profile }) => {
       set(({ user }) => ({ user: { ...user!, profile } }))
       const { id } = get().user!
