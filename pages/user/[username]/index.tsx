@@ -69,7 +69,7 @@ const User: NextPage<Props> = ({ user }) => {
             {user.authorized ? (
               <Registration user={user} />
             ) : (
-              <RequestDocuments />
+              <RequestDocuments user={user}/>
             )}
           </section>
         </section>
