@@ -13,6 +13,7 @@ const handler: NextApiHandler = async (request, response) => {
     const ticket: Ticket = await prisma.ticket.create({
       data: {
         type: body.type,
+        status: body.status,
         userId: id,
       },
     });
