@@ -84,11 +84,11 @@ const useUserStore = create<UseUserStore>((set, get) => ({
         user: {
           ...user!,
           authorized: false,
-          tickets: [...user!.tickets!, ticket],
+          tickets: {...user!.tickets!, ticket},
         },
       }))
       const { id } = get().user!
-      await fetch(`/api/users/${id}/ticket/create`, {
+      await fetch(`/api/users/${id}/tickets/create`, {
         method: 'POST',
         body: JSON.stringify(ticket),
       })
