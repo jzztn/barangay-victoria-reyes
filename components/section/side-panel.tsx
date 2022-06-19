@@ -41,7 +41,7 @@ const SidePanel = ({ image, name }: IProps) => {
             circleSize="w-10 h-10"
             iconSize="w-5 h-5"
             color={false}
-            link="#"
+            link={`/user/${name}/payment`}
           />
         </div>
 
