@@ -21,6 +21,8 @@ const ProfileField = ({
   field,
   edit,
 }: IProps) => {
+
+  console.log(inputField)
   return (
     <div className="flex flex-col gap-3">
       <h2 className="text-sm font-medium tracking-wide">
@@ -38,7 +40,7 @@ const ProfileField = ({
         {edit ? (
           <div>
             {user.profile !== null ? (
-              // edit is true and theres alreadt have a profile
+              // edit is true and theres already have a profile
               <input
                 type="text"
                 defaultValue={defaultValue}
