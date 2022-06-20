@@ -19,7 +19,7 @@ const Dropdown = ({ children, value, onChange, buttonName}: IProps) => {
         <span>{buttonName}</span>
         <ChevronDownIcon className="w-5 h-5" />
       </Listbox.Button>
-      <Listbox.Options className="absolute top-14 h-40 w-52 left-0 bg-white border-[1px] border-gray/50 rounded-md text-left text-sm overflow-y-scroll">
+      <Listbox.Options className="absolute top-14 h-40 w-52 left-0 bg-white z-50 border-[1px] border-gray/50 rounded-md text-left text-sm overflow-y-scroll">
         {children}
       </Listbox.Options>
     </Listbox>
