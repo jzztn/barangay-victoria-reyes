@@ -17,21 +17,6 @@ interface UseUserStore {
   }
 }
 
-interface UseUserStore {
-  user: User | null
-  read: (payload: { user: User }) => void
-  unRead: () => void
-  update: {
-    user: (payload: { key: 'authorized'; value: boolean }) => void
-    profile: (payload: { profile: Profile }) => void
-  }
-  create: {
-    profile: (payload: { profile: Profile }) => void
-    record: (payload: { record: Resident }) => void
-    ticket: (payload: { ticket: Ticket }) => void
-  }
-}
-
 const useUserStore = create<UseUserStore>((set, get) => ({
   user: null,
   read: ({ user }) => set({ user }),
@@ -53,6 +38,8 @@ const useUserStore = create<UseUserStore>((set, get) => ({
         body: JSON.stringify(profile),
       })
     },
+
+
   },
   create: {
     profile: async ({ profile }) => {
