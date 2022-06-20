@@ -55,7 +55,8 @@ const LadingPage: NextPage = () => {
                 neumorphism={true}
               />
               <NavLink name="How" link="#how" neumorphism={true} />
-              <NavLink name="Visit Us" link="#footer" neumorphism={false} />
+              <NavLink name="Visit Us" link="#footer" neumorphism={true} />
+              <NavLink name="Admin Login" link="/admin" neumorphism={false} />
             </NavLinks>
           </NavigationBar>
         </div>
