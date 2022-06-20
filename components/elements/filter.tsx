@@ -23,6 +23,7 @@ const Filter = ({ placeholder, setPlaceholder }: IProps) => {
       value={placeholder}
       onChange={setPlaceholder}
       buttonName={placeholder}
+
     >
       {categories.map((category, index) => (
         <Listbox.Option

@@ -28,6 +28,7 @@ interface Props {
 }
 
 const Profile: NextPage<Props> = ({ user }) => {
+  console.log(user)
   const createProfile = useUserStore((state) => state.create.profile)
   const updateProfile = useUserStore((state) => state.update.profile)
   const [inputField, setInputField] = useState<Profile>({
@@ -52,7 +53,7 @@ const Profile: NextPage<Props> = ({ user }) => {
         <div className="lg:hidden">
           <NavigationBar fixed={false}>
             <Logo place="justify-start" />
-            <SideBar
+            <SideBar logout={false}
               items={[
                 { name: 'Request', link: `/user/${user.email.split('@')[0]}` },
                 {
@@ -67,7 +68,6 @@ const Profile: NextPage<Props> = ({ user }) => {
                   name: 'Payment',
                   link: `/user/${user.email.split('@')[0]}/payment`,
                 },
-                { name: 'Logout', link: '#' },
               ]}
             />
           </NavigationBar>

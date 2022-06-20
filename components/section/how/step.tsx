@@ -15,13 +15,13 @@ const Step = ({ count, title, paragraph, end }: IProps) => {
         </div>
 
         {/* line */}
-        <div className={`${end ? "" :  "bg-gray/50 w-[2px] h-20"}`}></div>
+        <div className={`${end ? "" :  "bg-gray/50 w-[1px] h-20"}`}></div>
       </div>
 
       {/* title and paragraph */}
       <div className='flex flex-col gap-2 lg:gap-2'>
         <h1 className="font-semibold tracking-wide">{title}</h1>
-        <p className="text-left text-xs max-w-lg text-gray leading-relaxed tracking-wide">
+        <p className="text-left text-xs max-w-lg text-gray leading-relaxed ">
           {paragraph}
         </p>
       </div>

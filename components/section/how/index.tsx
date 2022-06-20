@@ -3,7 +3,7 @@ import Step from './step'
 
 const How = () => {
   return (
-    <div id="how" className="grid gap-5 px-2">
+    <div id="how" className="grid gap-5 px-5">
       <h1 className="font-semibold text-xl tracking-wider text-left md:ml-28 lg:text-2xl">
         How to Use?
       </h1>

@@ -29,7 +29,7 @@ const User: NextPage<Props> = ({ user }) => {
         <div className="lg:hidden">
           <NavigationBar fixed={false}>
             <Logo place="justify-start" />
-            <SideBar
+            <SideBar logout={true}
               items={[
                 { name: 'Request', link: `/user/${user.email.split('@')[0]}` },
                 {
@@ -44,7 +44,6 @@ const User: NextPage<Props> = ({ user }) => {
                   name: 'Payment',
                   link: `/user/${user.email.split('@')[0]}/payment`,
                 },
-                { name: 'Logout', link: '#' },
               ]}
             />
           </NavigationBar>

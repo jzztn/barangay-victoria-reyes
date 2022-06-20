@@ -1,14 +1,18 @@
 import { Menu } from '@headlessui/react'
 import { ChevronDoubleRightIcon, MenuAlt3Icon } from '@heroicons/react/solid'
+import { signOut } from 'next-auth/react'
 import Link from 'next/link'
+import Button from '../elements/button'
 
 interface IProps {
   items: {
     name: string
     link: string
-  }[]
+    
+  }[],
+  logout: boolean
 }
-const SideBar = ({ items }: IProps) => {
+const SideBar = ({ items, logout }: IProps) => {
   return (
     <Menu as="div" className="absolute -top-1 right-0 bg-white z-50">
       {({ open }) => (
@@ -42,6 +46,15 @@ const SideBar = ({ items }: IProps) => {
                   </Menu.Item>
                 </Link>
               ))}
+              {logout && (
+                <Menu.Item>
+                  <Button
+                    label="Log Out"
+                    color={false}
+                    handler={() => signOut()}
+                  />
+                </Menu.Item>
+              )}
             </Menu.Items>
           )}
         </div>

@@ -16,9 +16,10 @@ import NavigationBar from '../../../components/section/navbar'
 import NavLinks from '../../../components/section/navbar/nav-links'
 import SidePanel from '../../../components/section/side-panel'
 import Table from '../../../components/section/table'
-import TableHeader from '../../../components/section/table/header'
-import TableRow from '../../../components/section/table/row'
-import TableRows from '../../../components/section/table/rows'
+import TableHeaders from '../../../components/section/table/header'
+import TableHeader from '../../../components/section/table/header/header'
+import TableRow from '../../../components/section/table/row/row'
+import TableRows from '../../../components/section/table/row'
 import TableStatus from '../../../components/section/table/status'
 import SideBar from '../../../components/styled/sidebar'
 import type { User } from '../../../prisma/definition'
@@ -43,7 +44,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
         <div className="lg:hidden">
           <NavigationBar fixed={false}>
             <Logo place="justify-start" />
-            <SideBar
+            <SideBar logout={true}
               items={[
                 { name: 'Request', link: `/user/${user.email.split('@')[0]}` },
                 {
@@ -58,7 +59,6 @@ const Notifications: NextPage<Props> = ({ user }) => {
                   name: 'Payment',
                   link: `/user/${user.email.split('@')[0]}/payment`,
                 },
-                { name: 'Logout', link: '#' },
               ]}
             />
           </NavigationBar>
@@ -95,27 +95,34 @@ const Notifications: NextPage<Props> = ({ user }) => {
             </h4>
 
             {/* table */}
-            <div>
+            <div className="overflow-hidden">
               {/* default datas */}
               {input === '' && placeholder === 'Filter By' && (
                 <Table>
                   {/* headers */}
-                  <div className="grid grid-flow-col items-center ">
+                  <TableHeaders>
                     <TableHeader name="Full Name" />
                     <TableHeader name="Type" />
                     <TableHeader name="Request Date" />
                     <div className="ml-auto">
                       <TableHeader name="Status" />
                     </div>
-                  </div>
+                  </TableHeaders>
 
                   {/* rows */}
                   <div className="flex flex-col gap-2">
                     {user.tickets!.map((request, index) => (
                       <TableRows key={index}>
                         <TableRow name={user.name} />
-                        <TableRow name={request.type[0].toUpperCase() + request.type.slice(1)} />
-                        <TableRow name={moment(request.createAt).format('LL')} />
+                        <TableRow
+                          name={
+                            request.type[0].toUpperCase() +
+                            request.type.slice(1)
+                          }
+                        />
+                        <TableRow
+                          name={moment(request.createAt).format('LL')}
+                        />
                         <div className="ml-auto">
                           <TableStatus status={request.status} />
                         </div>
@@ -129,14 +136,14 @@ const Notifications: NextPage<Props> = ({ user }) => {
               {input !== '' && placeholder === 'Filter By' && (
                 <Table>
                   {/* headers */}
-                  <div className="grid grid-flow-col items-center">
+                  <TableHeaders>
                     <TableHeader name="Full Name" />
                     <TableHeader name="Type" />
                     <TableHeader name="Request Date" />
                     <div className="ml-auto">
                       <TableHeader name="Status" />
                     </div>
-                  </div>
+                  </TableHeaders>
 
                   {/* rows */}
                   <div className="flex flex-col gap-2">
@@ -145,15 +152,23 @@ const Notifications: NextPage<Props> = ({ user }) => {
                         (request) =>
                           request.type.toLowerCase().includes(input) ||
                           request.status.toLowerCase().includes(input) ||
-                          moment(request.createAt).format('LL')
+                          moment(request.createAt)
+                            .format('LL')
                             .toLowerCase()
                             .includes(input)
                       )
                       .map((request, index) => (
                         <TableRows key={index}>
                           <TableRow name={user.name} />
-                          <TableRow name={request.type[0].toUpperCase() + request.type.slice(1)} />
-                          <TableRow name={moment(request.createAt).format('LL')} />
+                          <TableRow
+                            name={
+                              request.type[0].toUpperCase() +
+                              request.type.slice(1)
+                            }
+                          />
+                          <TableRow
+                            name={moment(request.createAt).format('LL')}
+                          />
                           <div className="ml-auto">
                             <TableStatus status={request.status} />
                           </div>
@@ -167,14 +182,14 @@ const Notifications: NextPage<Props> = ({ user }) => {
               {input !== '' && placeholder !== 'Filter By' && (
                 <Table>
                   {/* headers */}
-                  <div className="grid grid-flow-col items-center">
+                  <TableHeaders>
                     <TableHeader name="Full Name" />
                     <TableHeader name="Type" />
                     <TableHeader name="Request Date" />
                     <div className="ml-auto">
                       <TableHeader name="Status" />
                     </div>
-                  </div>
+                  </TableHeaders>
 
                   {/* rows */}
                   <div className="flex flex-col gap-2">
@@ -183,25 +198,35 @@ const Notifications: NextPage<Props> = ({ user }) => {
                         (request) =>
                           request.type.toLowerCase() === placeholder ||
                           request.status.toLowerCase() === placeholder ||
-                          moment(request.createAt).format('LL').toLowerCase() ===
-                            placeholder
+                          moment(request.createAt)
+                            .format('LL')
+                            .toLowerCase() === placeholder
                       )
                       .filter(
                         (request) =>
                           request.type.toLowerCase().includes(input) ||
                           request.status.toLowerCase().includes(input) ||
                           request.createAt
-                          .toString().toLowerCase().includes(input)
+                            .toString()
+                            .toLowerCase()
+                            .includes(input)
                       )
                       .map((request, index) => (
                         <TableRows key={index}>
-                        <TableRow name={user.name} />
-                        <TableRow name={request.type[0].toUpperCase() + request.type.slice(1)} />
-                        <TableRow name={moment(request.createAt).format('LL')} />
-                        <div className="ml-auto">
-                          <TableStatus status={request.status} />
-                        </div>
-                      </TableRows>
+                          <TableRow name={user.name} />
+                          <TableRow
+                            name={
+                              request.type[0].toUpperCase() +
+                              request.type.slice(1)
+                            }
+                          />
+                          <TableRow
+                            name={moment(request.createAt).format('LL')}
+                          />
+                          <div className="ml-auto">
+                            <TableStatus status={request.status} />
+                          </div>
+                        </TableRows>
                       ))}
                   </div>
                 </Table>
@@ -211,29 +236,38 @@ const Notifications: NextPage<Props> = ({ user }) => {
               {input === '' && placeholder !== 'Filter By' && (
                 <Table>
                   {/* headers */}
-                  <div className="grid grid-flow-col items-center">
+                  <TableHeaders>
                     <TableHeader name="Full Name" />
                     <TableHeader name="Type" />
                     <TableHeader name="Request Date" />
                     <div className="ml-auto">
                       <TableHeader name="Status" />
                     </div>
-                  </div>
+                  </TableHeaders>
 
                   {/* rows */}
                   <div className="flex flex-col gap-2">
-                    {user.tickets!
-                      .filter(
+                    {user
+                      .tickets!.filter(
                         (request) =>
                           request.type.toLowerCase() === placeholder ||
                           request.status.toLowerCase() === placeholder ||
-                          moment(request.createAt).format('LL').toLowerCase() === placeholder
+                          moment(request.createAt)
+                            .format('LL')
+                            .toLowerCase() === placeholder
                       )
                       .map((request, index) => (
                         <TableRows key={index}>
                           <TableRow name={user.name} />
-                          <TableRow name={request.type[0].toUpperCase() + request.type.slice(1)} />
-                          <TableRow name={moment(request.createAt).format('LL')} />
+                          <TableRow
+                            name={
+                              request.type[0].toUpperCase() +
+                              request.type.slice(1)
+                            }
+                          />
+                          <TableRow
+                            name={moment(request.createAt).format('LL')}
+                          />
                           <div className="ml-auto">
                             <TableStatus status={request.status} />
                           </div>
