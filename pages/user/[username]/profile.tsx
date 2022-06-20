@@ -36,7 +36,7 @@ const Profile: NextPage<Props> = ({ user }) => {
     firstName: '',
     middleName: '',
     lastName: '',
-    gender: Gender.OTHERS,
+    gender: Gender.FEMALE,
     birthdate: '',
     contact: '',
     updatedAt: '',
@@ -53,7 +53,8 @@ const Profile: NextPage<Props> = ({ user }) => {
         <div className="lg:hidden">
           <NavigationBar fixed={false}>
             <Logo place="justify-start" />
-            <SideBar logout={false}
+            <SideBar
+              logout={true}
               items={[
                 { name: 'Request', link: `/user/${user.email.split('@')[0]}` },
                 {
@@ -87,7 +88,11 @@ const Profile: NextPage<Props> = ({ user }) => {
 
       <Main>
         <section className="h-full grid lg:grid-cols-[auto,1fr]">
-          <SidePanel image={user.image} name={user.email.split('@')[0]} />
+          <SidePanel
+            image={user.image}
+            name={user.email.split('@')[0]}
+            admin={false}
+          />
           <section className="flex flex-col gap-3 px-10 py-7">
             <div className="flex gap-3 items-clientSecret ">
               <h1 className="font-semibold tracking-wide">Profile Account</h1>
@@ -103,11 +108,7 @@ const Profile: NextPage<Props> = ({ user }) => {
                   setInputField={setInputField}
                   user={user}
                   value={inputField.firstName}
-                  defaultValue={
-                    user.profile
-                      ? user.profile.firstName
-                      : user.name.split(' ').slice(0, -1).join(' ')
-                  }
+                  defaultValue={user.profile!.firstName}
                   field="firstName"
                   edit={edit}
                 />
@@ -149,20 +150,76 @@ const Profile: NextPage<Props> = ({ user }) => {
                   edit={edit}
                 />
 
-                <ProfileField
-                  icon={UserIcon}
-                  inputField={inputField}
-                  setInputField={setInputField}
-                  user={user}
-                  value={inputField.birthdate}
-                  defaultValue={
-                    user.profile
-                      ? moment(user.profile.birthdate).format('LL')
-                      : ''
-                  }
-                  field="birthdate"
-                  edit={edit}
-                />
+                {edit ? (
+                  <div>
+                    {user.profile !== null ? (
+                      // edit is true and theres already have a profile
+                      <input
+                        type="date"
+                        defaultValue={user.profile
+                          ? moment(user.profile.birthdate).format('LL')
+                          : ''}
+                        onChange={(e) =>
+                          setInputField({
+                            ...inputField,
+                            birthdate: e.target.value,
+                          })
+                        }
+                        className="w-72 lg:w-96 py-3 pl-4 "
+                      />
+                    ) : (
+                      // edit is true and theres no profile yet
+                      <div>
+                        <input
+                          type="date"
+                          defaultValue={inputField.birthdate}
+                          onChange={(e) =>
+                            setInputField({
+                              ...inputField,
+                              birthdate: e.target.value,
+                            })
+                          }
+                          className="w-72 lg:w-96 py-3 pl-4"
+                        />
+                        <span className="text-red-500 text-xs italic mt-1">
+                          Fill up this field first
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div>
+                    {user.profile !== null ? (
+                      // edit is false and theres already have a profile
+                      <input
+                        type="date"
+                        value={user.profile
+                          ? moment(user.profile.birthdate).format('LL')
+                          : ''}
+                        onChange={(e) =>
+                          setInputField({
+                            ...inputField,
+                            birthdate: e.target.value,
+                          })
+                        }
+                        className="w-72 lg:w-96 py-3 pl-4 outline-none"
+                      />
+                    ) : (
+                      // edit is false and theres no profile yet
+                      <input
+                        type="date"
+                        defaultValue={inputField.birthdate}
+                        onChange={(e) =>
+                          setInputField({
+                            ...inputField,
+                            birthdate: e.target.value,
+                          })
+                        }
+                        className="w-72 lg:w-96 py-3 pl-4"
+                      />
+                    )}
+                  </div>
+                )}
 
                 {/* gender */}
                 <div className="grid gap-2">
@@ -183,6 +240,9 @@ const Profile: NextPage<Props> = ({ user }) => {
                       >
                         {({ active, selected }) => (
                           <h3
+                            onClick={() =>
+                              setInputField({ ...inputField, gender: gender as Gender })
+                            }
                             className={`${
                               active
                                 ? 'bg-primary/40 text-primary'
@@ -210,7 +270,7 @@ const Profile: NextPage<Props> = ({ user }) => {
                   handler={() => {
                     updateProfile({ profile: inputField })
                     setEdit(false)
-                    console.log("edited" , inputField)
+                    console.log('edited', inputField)
                   }}
                 />
               ) : (

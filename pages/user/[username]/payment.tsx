@@ -65,7 +65,7 @@ const Payment: NextPage<Props> = ({ user }) => {
 
       <Main>
         <section className="h-full grid lg:grid-cols-[auto,1fr]">
-          <SidePanel image={user.image} name={user.email.split('@')[0]} />
+          <SidePanel image={user.image} name={user.email.split('@')[0]} admin={false}/>
           <section className="flex flex-col gap-10 px-10 py-7 lg:gap-10">
             <h1 className="font-semibold tracking-wide">Payment Form</h1>
             <div className="grid gap-3 lg:grid-cols-2">

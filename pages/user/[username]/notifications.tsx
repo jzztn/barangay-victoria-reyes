@@ -78,7 +78,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
 
       <Main>
         <section className="h-full grid lg:grid-cols-[auto,1fr]">
-          <SidePanel image={user.image} name={user.email.split('@')[0]} />
+          <SidePanel image={user.image} name={user.email.split('@')[0]} admin={false}/>
           <section className="grid grid-rows-[auto,auto,auto,1fr] gap-8 px-10 py-7">
             <h1 className="font-semibold tracking-wide">Notifications</h1>
             <div className="grid lg:grid-cols-[1fr,auto] gap-5 lg:gap-10">
@@ -86,6 +86,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
               <Filter
                 placeholder={placeholder}
                 setPlaceholder={setPlaceholder}
+                resident={false}
               />
             </div>
 
@@ -124,7 +125,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
                           name={moment(request.createAt).format('LL')}
                         />
                         <div className="ml-auto">
-                          <TableStatus status={request.status} />
+                          <TableStatus admin={false} status={request.status}/>
                         </div>
                       </TableRows>
                     ))}
@@ -170,7 +171,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
                             name={moment(request.createAt).format('LL')}
                           />
                           <div className="ml-auto">
-                            <TableStatus status={request.status} />
+                            <TableStatus admin={false} status={request.status}/>
                           </div>
                         </TableRows>
                       ))}
@@ -224,7 +225,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
                             name={moment(request.createAt).format('LL')}
                           />
                           <div className="ml-auto">
-                            <TableStatus status={request.status} />
+                            <TableStatus admin={false} status={request.status}/>
                           </div>
                         </TableRows>
                       ))}
@@ -269,7 +270,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
                             name={moment(request.createAt).format('LL')}
                           />
                           <div className="ml-auto">
-                            <TableStatus status={request.status} />
+                            <TableStatus admin={false} status={request.status}/>
                           </div>
                         </TableRows>
                       ))}

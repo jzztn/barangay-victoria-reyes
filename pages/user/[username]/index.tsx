@@ -63,7 +63,7 @@ const User: NextPage<Props> = ({ user }) => {
 
       <Main>
         <section className="h-full grid lg:grid-cols-[auto,1fr]">
-          <SidePanel image={user.image} name={user.email.split('@')[0]} />
+          <SidePanel image={user.image} name={user.email.split('@')[0]} admin={false} />
           <section
             className={`grid ${
               user.authorized ? 'justify-center items-center' : ''
