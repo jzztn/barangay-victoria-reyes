@@ -29,8 +29,9 @@ import TableStatus from '../../components/section/table/status'
 import { useState } from 'react'
 import { Ticket } from '@prisma/client'
 import moment from 'moment'
+import Image from 'next/image'
 
-type TTicket = (Ticket & {user: User})[]
+type TTicket = (Ticket & { user: User })[]
 
 interface Props {
   users: User[]
@@ -38,7 +39,7 @@ interface Props {
   tickets: TTicket
 }
 
-const Requests: NextPage<Props> = ({ users, residents , tickets}) => {
+const Requests: NextPage<Props> = ({ users, residents, tickets }) => {
   console.log(tickets)
   const router = useRouter()
 
@@ -96,6 +97,9 @@ const Requests: NextPage<Props> = ({ users, residents , tickets}) => {
         <section className="h-full grid lg:grid-cols-[auto,1fr]">
           <SidePanel image="\images\admin.png" admin={true} />
           <section className="grid grid-rows-[auto,auto,auto,1fr] gap-8 px-10 py-7">
+            <div className="absolute w-96 h-96 lg:w-[450px] lg:h-[450px] top-[50%] bottom-[50%] -translate-y-[50%] left-[50%] right-[50%] -translate-x-[50%] -z-50 grid justify-items-center items-center opacity-30">
+              <Image src="/images/logo.png" layout="fill" objectFit="cover" />
+            </div>
             <h1 className="font-semibold tracking-wide">Requests</h1>
             <div className="grid lg:grid-cols-[1fr,auto] gap-5 lg:gap-10">
               <Search input={input} setInput={setInput} />
@@ -107,7 +111,7 @@ const Requests: NextPage<Props> = ({ users, residents , tickets}) => {
             </div>
 
             {/* notification count */}
-            <h4 className="text-xs lg:text-sm font-medium">
+            <h4 className="text-xs lg:text-sm font-medium mb-8">
               ALL ( <span className="font-bold">{tickets.length}</span> )
             </h4>
 
@@ -130,17 +134,21 @@ const Requests: NextPage<Props> = ({ users, residents , tickets}) => {
                   <div className="flex flex-col gap-2">
                     {tickets!.map((ticket, index) => (
                       <TableRows key={index}>
-                        <TableRow name={`${ticket.user.profile?.firstName} ${ticket.user.profile?.lastName}`} />
+                        <TableRow
+                          name={`${ticket.user.profile?.firstName} ${ticket.user.profile?.lastName}`}
+                        />
                         <TableRow
                           name={
                             ticket.type[0].toUpperCase() + ticket.type.slice(1)
                           }
                         />
-                        <TableRow
-                          name={moment(ticket.createAt).format('LL')}
-                        />
+                        <TableRow name={moment(ticket.createAt).format('LL')} />
                         <div className="ml-auto">
-                          <TableStatus admin={true} ticketId={ticket.id}  status={ticket.status}/>
+                          <TableStatus
+                            admin={true}
+                            ticketId={ticket.id}
+                            status={ticket.status}
+                          />
                         </div>
                       </TableRows>
                     ))}
@@ -163,7 +171,8 @@ const Requests: NextPage<Props> = ({ users, residents , tickets}) => {
 
                   {/* rows */}
                   <div className="flex flex-col gap-2">
-                    {tickets.filter(
+                    {tickets
+                      .filter(
                         (ticket) =>
                           ticket.type.toLowerCase().includes(input) ||
                           ticket.status.toLowerCase().includes(input) ||
@@ -174,19 +183,26 @@ const Requests: NextPage<Props> = ({ users, residents , tickets}) => {
                       )
                       .map((ticket) => (
                         <TableRows key={ticket.id}>
-                        <TableRow name={`${ticket.user.profile?.firstName} ${ticket.user.profile?.lastName}`} />
-                        <TableRow
-                          name={
-                            ticket.type[0].toUpperCase() + ticket.type.slice(1)
-                          }
-                        />
-                        <TableRow
-                          name={moment(ticket.createAt).format('LL')}
-                        />
-                        <div className="ml-auto">
-                          <TableStatus admin={true} ticketId={ticket.id}  status={ticket.status}/>
-                        </div>
-                      </TableRows>
+                          <TableRow
+                            name={`${ticket.user.profile?.firstName} ${ticket.user.profile?.lastName}`}
+                          />
+                          <TableRow
+                            name={
+                              ticket.type[0].toUpperCase() +
+                              ticket.type.slice(1)
+                            }
+                          />
+                          <TableRow
+                            name={moment(ticket.createAt).format('LL')}
+                          />
+                          <div className="ml-auto">
+                            <TableStatus
+                              admin={true}
+                              ticketId={ticket.id}
+                              status={ticket.status}
+                            />
+                          </div>
+                        </TableRows>
                       ))}
                   </div>
                 </Table>
@@ -207,13 +223,13 @@ const Requests: NextPage<Props> = ({ users, residents , tickets}) => {
 
                   {/* rows */}
                   <div className="flex flex-col gap-2">
-                    {tickets!.filter(
+                    {tickets!
+                      .filter(
                         (ticket) =>
                           ticket.type.toLowerCase() === placeholder ||
                           ticket.status.toLowerCase() === placeholder ||
-                          moment(ticket.createAt)
-                            .format('LL')
-                            .toLowerCase() === placeholder
+                          moment(ticket.createAt).format('LL').toLowerCase() ===
+                            placeholder
                       )
                       .filter(
                         (ticket) =>
@@ -226,19 +242,26 @@ const Requests: NextPage<Props> = ({ users, residents , tickets}) => {
                       )
                       .map((ticket) => (
                         <TableRows key={ticket.id}>
-                        <TableRow name={`${ticket.user.profile?.firstName} ${ticket.user.profile?.lastName}`} />
-                        <TableRow
-                          name={
-                            ticket.type[0].toUpperCase() + ticket.type.slice(1)
-                          }
-                        />
-                        <TableRow
-                          name={moment(ticket.createAt).format('LL')}
-                        />
-                        <div className="ml-auto">
-                          <TableStatus admin={true} ticketId={ticket.id}  status={ticket.status}/>
-                        </div>
-                      </TableRows>
+                          <TableRow
+                            name={`${ticket.user.profile?.firstName} ${ticket.user.profile?.lastName}`}
+                          />
+                          <TableRow
+                            name={
+                              ticket.type[0].toUpperCase() +
+                              ticket.type.slice(1)
+                            }
+                          />
+                          <TableRow
+                            name={moment(ticket.createAt).format('LL')}
+                          />
+                          <div className="ml-auto">
+                            <TableStatus
+                              admin={true}
+                              ticketId={ticket.id}
+                              status={ticket.status}
+                            />
+                          </div>
+                        </TableRows>
                       ))}
                   </div>
                 </Table>
@@ -259,29 +282,36 @@ const Requests: NextPage<Props> = ({ users, residents , tickets}) => {
 
                   {/* rows */}
                   <div className="flex flex-col gap-2">
-                    {tickets!.filter(
+                    {tickets!
+                      .filter(
                         (ticket) =>
                           ticket.type.toLowerCase() === placeholder ||
                           ticket.status.toLowerCase() === placeholder ||
-                          moment(ticket.createAt)
-                            .format('LL')
-                            .toLowerCase() === placeholder
+                          moment(ticket.createAt).format('LL').toLowerCase() ===
+                            placeholder
                       )
                       .map((ticket) => (
                         <TableRows key={ticket.id}>
-                        <TableRow name={`${ticket.user.profile?.firstName} ${ticket.user.profile?.lastName}`} />
-                        <TableRow
-                          name={
-                            ticket.type[0].toUpperCase() + ticket.type.slice(1)
-                          }
-                        />
-                        <TableRow
-                          name={moment(ticket.createAt).format('LL')}
-                        />
-                        <div className="ml-auto">
-                          <TableStatus admin={true} ticketId={ticket.id}  status={ticket.status}/>
-                        </div>
-                      </TableRows>
+                          <TableRow
+                            name={`${ticket.user.profile?.firstName} ${ticket.user.profile?.lastName}`}
+                          />
+                          <TableRow
+                            name={
+                              ticket.type[0].toUpperCase() +
+                              ticket.type.slice(1)
+                            }
+                          />
+                          <TableRow
+                            name={moment(ticket.createAt).format('LL')}
+                          />
+                          <div className="ml-auto">
+                            <TableStatus
+                              admin={true}
+                              ticketId={ticket.id}
+                              status={ticket.status}
+                            />
+                          </div>
+                        </TableRows>
                       ))}
                   </div>
                 </Table>
@@ -317,8 +347,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
     include: {
       user: {
         include: {
-          profile: true
-        }
+          profile: true,
+        },
       },
     },
   })
