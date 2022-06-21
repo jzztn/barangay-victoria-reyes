@@ -39,6 +39,7 @@ const LadingPage: NextPage = () => {
               {name:"Advantages" ,link:"#advantages"},
               {name:"How" ,link:"#how"},
               {name:"Visit Us", link:"#footer"},
+              {name:"Admin Login", link:"/admin"},
             ]}/>
           </NavigationBar>
         </div>
