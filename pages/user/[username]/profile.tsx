@@ -46,8 +46,6 @@ const Profile: NextPage<Props> = ({ user }) => {
   const [genders] = useState(['MALE', 'FEMALE', 'OTHERS'])
   const [edit, setEdit] = useState(false)
 
-  console.log(user)
-
   return (
     <Layout store={{ user }}>
       <Header>

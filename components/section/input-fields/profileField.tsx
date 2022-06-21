@@ -22,7 +22,6 @@ const ProfileField = ({
   edit,
 }: IProps) => {
 
-  console.log(inputField)
   return (
     <div className="flex flex-col gap-3">
       <h2 className="text-sm font-medium tracking-wide">
