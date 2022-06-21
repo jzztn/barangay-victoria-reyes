@@ -4,6 +4,7 @@ import type {
   GetStaticProps,
   NextPage,
 } from 'next'
+import { signOut } from 'next-auth/react'
 import prisma from '../../adapters/prisma'
 import Name from '../../components/elements/account-name'
 import Button from '../../components/elements/button'
@@ -17,7 +18,18 @@ import SideBar from '../../components/styled/sidebar'
 import type { Resident, User } from '../../prisma/definition'
 import serializeData from '../../utilities/serialize-data'
 import Logo from '../../components/elements/logo'
+import { useState } from 'react'
+import Search from '../../components/elements/search'
+import Filter from '../../components/elements/filter'
+import Table from '../../components/section/table'
+import TableHeaders from '../../components/section/table/header'
+import TableHeader from '../../components/section/table/header/header'
+import TableRows from '../../components/section/table/row'
+import TableRow from '../../components/section/table/row/row'
 import { useRouter } from 'next/router'
+import moment from 'moment'
+import useAdminStore from '../../stores/use-admin-store'
+import TableStatus from '../../components/section/table/status'
 
 interface Props {
   users: User[]
@@ -25,7 +37,14 @@ interface Props {
 }
 
 const Registrations: NextPage<Props> = ({ users, residents }) => {
-  const router = useRouter()
+  console.log(residents)
+  // search input field
+  const [input, setInput] = useState('')
+
+
+  const { logout } = useAdminStore()
+  
+
   return (
     <section className="h-screen grid grid-rows-[auto,1fr]">
       <Header>
@@ -60,11 +79,7 @@ const Registrations: NextPage<Props> = ({ users, residents }) => {
             <Logo place="justify-start" />
             <NavLinks>
               <Name name="Administration" />
-              <Button
-                label="Log Out"
-                color={true}
-                handler={() => router.push('/')}
-              />
+              <Button label="Log Out" color={true} handler={logout} />
             </NavLinks>
           </NavigationBar>
         </div>
@@ -73,7 +88,132 @@ const Registrations: NextPage<Props> = ({ users, residents }) => {
       <Main>
         <section className="h-full grid lg:grid-cols-[auto,1fr]">
           <SidePanel image="\images\admin.png" admin={true} />
-          <section>registrations</section>
+          <section className="grid grid-rows-[auto,auto,auto,1fr] gap-8 px-10 py-7">
+            <h1 className="font-semibold tracking-wide">Registrations</h1>
+
+            <Search input={input} setInput={setInput} />
+
+            {/* user count */}
+            <h4 className="text-xs lg:text-sm font-medium">
+              ALL ( <span className="font-bold">{20}</span> )
+            </h4>
+
+            {/* table */}
+            <div className="overflow-hidden">
+              {/* search datas */}
+              {input === '' ? (
+                // display data
+                <Table>
+                  {/* headers */}
+                  <TableHeaders>
+                    <TableHeader name="First Name" />
+                    <TableHeader name="Middle Name" />
+                    <TableHeader name="Last Name" />
+                    <TableHeader name="Gender" />
+                    <TableHeader name="Contact Number" />
+                    <TableHeader name="Birthdate" />
+                    <TableHeader name="Birthplace" />
+                    <TableHeader name="Address" />
+                    <TableHeader name="Started Year" />
+                    <TableHeader name="Homeowner" />
+                    <TableHeader name="Voter" />
+                    <TableHeader name="Approval" />
+                  </TableHeaders>
+
+                  {/* rows */}
+                  <div className="flex flex-col gap-2">
+                    {users.map((user) => {
+                      return user.records!.map((record) => (
+                        <TableRows key={record.id}>
+                          <TableRow name={record.firstName} />
+                          <TableRow name={record.middleName} />
+                          <TableRow name={record.lastName} />
+                          <TableRow name={record.gender} />
+                          <TableRow name={record.contact} />
+                          <TableRow name={record.birthdate} />
+                          <TableRow name={record.birthplace} />
+                          <TableRow name={record.address} />
+                          <TableRow
+                            name={moment(record.startedAt).format('LL')}
+                          />
+                          <TableRow name={record.homeowner.toString()} />
+                          <TableRow name={record.voter.toString()} />
+                          <TableStatus admin={true} ticketId={user.id}  status={'Pending'}/>
+                        </TableRows>
+                      ))
+                    })}
+                  </div>
+                </Table>
+              ) : (
+                // filtered data
+                <Table>
+                  {/* headers */}
+                  <TableHeaders>
+                    <TableHeader name="First Name" />
+                    <TableHeader name="Middle Name" />
+                    <TableHeader name="Last Name" />
+                    <TableHeader name="Gender" />
+                    <TableHeader name="Contact Number" />
+                    <TableHeader name="Birthdate" />
+                    <TableHeader name="Birthplace" />
+                    <TableHeader name="Address" />
+                    <TableHeader name="Started Year" />
+                    <TableHeader name="Homeowner" />
+                    <TableHeader name="Voter" />
+                    <TableHeader name="Approval" />
+                  </TableHeaders>
+
+                  {/* rows */}
+                  <div className="flex flex-col gap-2">
+                    {users.map((user) => {
+                      return user
+                        .records!.filter(
+                          (record) =>
+                            record.firstName.toLowerCase().includes(input) ||
+                            record.middleName.toLowerCase().includes(input) ||
+                            record.lastName.toLowerCase().includes(input) ||
+                            record.address.toLowerCase().includes(input) ||
+                            record.birthplace.toLowerCase().includes(input) ||
+                            record.birthdate.toLowerCase().includes(input) ||
+                            record.gender.toLowerCase().includes(input) ||
+                            record.contact.toLowerCase().includes(input) ||
+                            record.homeowner
+                              .toString()
+                              .toLowerCase()
+                              .includes(input) ||
+                            record.voter
+                              .toString()
+                              .toLowerCase()
+                              .includes(input) ||
+                            record.startedAt
+                              .toString()
+                              .toLowerCase()
+                              .includes(input)
+                        )
+                        .map((record) => (
+                          <TableRows key={record.id}>
+                            <TableRow name={record.firstName} />
+                            <TableRow name={record.middleName} />
+                            <TableRow name={record.lastName} />
+                            <TableRow name={record.gender} />
+                            <TableRow name={record.contact} />
+                            <TableRow name={record.birthdate} />
+                            <TableRow name={record.birthplace} />
+                            <TableRow name={record.address} />
+                            <TableRow
+                              name={moment(record.startedAt).format('LL')}
+                            />
+                            <TableRow name={record.homeowner.toString()} />
+                            <TableRow name={record.voter.toString()} />
+                            <TableStatus admin={true} ticketId={user.id}  status={'Pending'}/>
+                          </TableRows>
+                        ))
+                    })}
+                  </div>
+                </Table>
+              )}
+            </div>
+          </section>
         </section>
       </Main>
     </section>
