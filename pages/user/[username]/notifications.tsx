@@ -120,7 +120,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
                   </TableHeaders>
 
                   {/* rows */}
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col">
                     {user.tickets!.map((request, index) => (
                       <TableRows key={index}>
                         <TableRow name={user.name} />
@@ -156,7 +156,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
                   </TableHeaders>
 
                   {/* rows */}
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col">
                     {user
                       .tickets!.filter(
                         (request) =>
@@ -205,7 +205,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
                   </TableHeaders>
 
                   {/* rows */}
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col">
                     {user
                       .tickets!.filter(
                         (request) =>
@@ -262,7 +262,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
                   </TableHeaders>
 
                   {/* rows */}
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col">
                     {user
                       .tickets!.filter(
                         (request) =>

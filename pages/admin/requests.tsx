@@ -131,7 +131,7 @@ const Requests: NextPage<Props> = ({ users, residents, tickets }) => {
                   </TableHeaders>
 
                   {/* rows */}
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col">
                     {tickets!.map((ticket, index) => (
                       <TableRows key={index}>
                         <TableRow
@@ -170,7 +170,7 @@ const Requests: NextPage<Props> = ({ users, residents, tickets }) => {
                   </TableHeaders>
 
                   {/* rows */}
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col ">
                     {tickets
                       .filter(
                         (ticket) =>
@@ -222,7 +222,7 @@ const Requests: NextPage<Props> = ({ users, residents, tickets }) => {
                   </TableHeaders>
 
                   {/* rows */}
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col ">
                     {tickets!
                       .filter(
                         (ticket) =>
@@ -281,7 +281,7 @@ const Requests: NextPage<Props> = ({ users, residents, tickets }) => {
                   </TableHeaders>
 
                   {/* rows */}
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col">
                     {tickets!
                       .filter(
                         (ticket) =>

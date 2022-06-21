@@ -185,7 +185,7 @@ const Admin: NextPage<Props> = ({ users, residents }) => {
                   </TableHeaders>
 
                   {/* rows */}
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col">
                     {users.map((user) => {
                       return user.records!.map((record) => (
                         <TableRows key={record.id}>
@@ -228,7 +228,7 @@ const Admin: NextPage<Props> = ({ users, residents }) => {
                   </TableHeaders>
 
                   {/* rows */}
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col">
                     {users.map((user) => {
                       return user
                         .records!.filter(
