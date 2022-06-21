@@ -65,21 +65,21 @@ const SidePanel = ({ image, name, admin }: IProps) => {
                 circleSize="w-10 h-10"
                 iconSize="w-5 h-5"
                 color={false}
-                link='/admin'
+                link="/admin"
               />
               <Icon
                 Type={NewspaperIcon}
                 circleSize="w-10 h-10"
                 iconSize="w-5 h-5"
                 color={false}
-                link='/admin/requests'
+                link="/admin/requests"
               />
               <Icon
                 Type={UserIcon}
                 circleSize="w-10 h-10"
                 iconSize="w-5 h-5"
                 color={false}
-                link='/admin/profile'
+                link="/admin/profile"
               />
             </div>
 
