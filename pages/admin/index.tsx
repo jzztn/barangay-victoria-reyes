@@ -36,21 +36,17 @@ interface Props {
 }
 
 const Admin: NextPage<Props> = ({ users, residents }) => {
-  console.log(users)
+  console.log(residents)
   // search input field
   const [input, setInput] = useState('')
-
-  // filter placeholder
-  const [placeholder, setPlaceholder] = useState('Filter By')
 
   const [adminAccoutn, setAdminAccount] = useState({
     username: '',
     password: '',
   })
 
-  const {isLogin, login, logout} = useAdminStore()
-  const router = useRouter()
-
+  const { isLogin, login, logout } = useAdminStore()
+  
   const handleLogin = () => {
     if (
       adminAccoutn.username === 'admin' &&
@@ -62,35 +58,45 @@ const Admin: NextPage<Props> = ({ users, residents }) => {
 
   if (!isLogin) {
     return (
-      <div className="h-screen grid place-items-center">
-        <div>
-          <div className="bg-white shadow-md shadow-gray px-6 py-10 max-w-3xl mx-auto rounded-md">
-            <div className="flex flex-col gap-5">
-              <h1 className="font-medium tracking-wide text-center font-poppins">
-                Admin Login
-              </h1>
-              <input
-                type="text"
-                placeholder="username"
-                onChange={(e) =>
-                  setAdminAccount({ ...adminAccoutn, username: e.target.value })
-                }
-                className="py-3 w-96 pl-2 rounded-md bg-slate-50"
-              />
-              <input
-                type="password"
-                placeholder="password"
-                onChange={(e) =>
-                  setAdminAccount({ ...adminAccoutn, password: e.target.value })
-                }
-                className="py-3 w-96 pl-2 rounded-md bg-slate-50 mb-5"
-              />
+      <div className="bg-black/40 h-screen fix inset-0 grid jusify-items-center items-center">
+        <div className="h-screen grid place-items-center">
+          <div>
+            <div className="bg-white shadow-md shadow-gray/40 px-6 py-10 max-w-3xl mx-auto rounded-md">
+              <div className="flex flex-col gap-5">
+                <div className="flex flex-col gap-1 text-center font-poppins">
+                  <h1 className="font-medium tracking-wide">Admin Login</h1>
+                  <h2 className="text-xs font-poppins">
+                    to continue to{' '}
+                    <span className="text-primary font-semibold">
+                      Barangay Victoria Reyes
+                    </span>
+                  </h2>
+                </div>
+                <input
+                  type="text"
+                  placeholder="username"
+                  onChange={(e) =>
+                    setAdminAccount({
+                      ...adminAccoutn,
+                      username: e.target.value,
+                    })
+                  }
+                  className="py-3 w-96 pl-2 rounded-md bg-slate-50 placeholder:text-sm "
+                />
+                <input
+                  type="password"
+                  placeholder="password"
+                  onChange={(e) =>
+                    setAdminAccount({
+                      ...adminAccoutn,
+                      password: e.target.value,
+                    })
+                  }
+                  className="py-3 w-96 pl-2 rounded-md bg-slate-50 mb-5 placeholder:text-sm "
+                />
 
-              <Button label="Login" color={true} handler={handleLogin} />
-
-              <span className="text-xs text-primary font-semibold text-center">
-                Barangay Victoria Reyes
-              </span>
+                <Button label="Login" color={true} handler={handleLogin} />
+              </div>
             </div>
           </div>
         </div>
@@ -132,11 +138,7 @@ const Admin: NextPage<Props> = ({ users, residents }) => {
             <Logo place="justify-start" />
             <NavLinks>
               <Name name="Administration" />
-              <Button
-                label="Log Out"
-                color={true}
-                handler={logout}
-              />
+              <Button label="Log Out" color={true} handler={logout} />
             </NavLinks>
           </NavigationBar>
         </div>
