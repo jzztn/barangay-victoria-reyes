@@ -41,9 +41,7 @@ const Registrations: NextPage<Props> = ({ users, residents }) => {
   // search input field
   const [input, setInput] = useState('')
 
-
   const { logout } = useAdminStore()
-  
 
   return (
     <section className="h-screen grid grid-rows-[auto,1fr]">
@@ -106,6 +104,7 @@ const Registrations: NextPage<Props> = ({ users, residents }) => {
                 <Table>
                   {/* headers */}
                   <TableHeaders>
+                    <TableHeader name="Resident ID" />
                     <TableHeader name="First Name" />
                     <TableHeader name="Middle Name" />
                     <TableHeader name="Last Name" />
@@ -125,6 +124,7 @@ const Registrations: NextPage<Props> = ({ users, residents }) => {
                     {users.map((user) => {
                       return user.records!.map((record) => (
                         <TableRows key={record.id}>
+                          <TableRow name={record.id} />
                           <TableRow name={record.firstName} />
                           <TableRow name={record.middleName} />
                           <TableRow name={record.lastName} />
@@ -138,7 +138,11 @@ const Registrations: NextPage<Props> = ({ users, residents }) => {
                           />
                           <TableRow name={record.homeowner.toString()} />
                           <TableRow name={record.voter.toString()} />
-                          <TableStatus admin={true} ticketId={user.id}  status={'Pending'}/>
+                          <TableStatus
+                            admin={true}
+                            ticketId={user.id}
+                            status={'Pending'}
+                          />
                         </TableRows>
                       ))
                     })}
@@ -149,6 +153,7 @@ const Registrations: NextPage<Props> = ({ users, residents }) => {
                 <Table>
                   {/* headers */}
                   <TableHeaders>
+                    <TableHeader name="Resident ID" />
                     <TableHeader name="First Name" />
                     <TableHeader name="Middle Name" />
                     <TableHeader name="Last Name" />
@@ -169,6 +174,7 @@ const Registrations: NextPage<Props> = ({ users, residents }) => {
                       return user
                         .records!.filter(
                           (record) =>
+                          record.id.toLowerCase().includes(input) ||
                             record.firstName.toLowerCase().includes(input) ||
                             record.middleName.toLowerCase().includes(input) ||
                             record.lastName.toLowerCase().includes(input) ||
@@ -192,6 +198,7 @@ const Registrations: NextPage<Props> = ({ users, residents }) => {
                         )
                         .map((record) => (
                           <TableRows key={record.id}>
+                            <TableRow name={record.id} />
                             <TableRow name={record.firstName} />
                             <TableRow name={record.middleName} />
                             <TableRow name={record.lastName} />
@@ -205,7 +212,11 @@ const Registrations: NextPage<Props> = ({ users, residents }) => {
                             />
                             <TableRow name={record.homeowner.toString()} />
                             <TableRow name={record.voter.toString()} />
-                            <TableStatus admin={true} ticketId={user.id}  status={'Pending'}/>
+                            <TableStatus
+                              admin={true}
+                              ticketId={user.id}
+                              status={'Pending'}
+                            />
                           </TableRows>
                         ))
                     })}

@@ -46,7 +46,7 @@ const Admin: NextPage<Props> = ({ users, residents }) => {
   })
 
   const { isLogin, login, logout } = useAdminStore()
-  
+
   const handleLogin = () => {
     if (
       adminAccoutn.username === 'admin' &&
@@ -165,6 +165,7 @@ const Admin: NextPage<Props> = ({ users, residents }) => {
                 <Table>
                   {/* headers */}
                   <TableHeaders>
+                    <TableHeader name="Resident ID" />
                     <TableHeader name="First Name" />
                     <TableHeader name="Middle Name" />
                     <TableHeader name="Last Name" />
@@ -183,6 +184,7 @@ const Admin: NextPage<Props> = ({ users, residents }) => {
                     {users.map((user) => {
                       return user.records!.map((record) => (
                         <TableRows key={record.id}>
+                          <TableRow name={record.id} />
                           <TableRow name={record.firstName} />
                           <TableRow name={record.middleName} />
                           <TableRow name={record.lastName} />
@@ -206,6 +208,7 @@ const Admin: NextPage<Props> = ({ users, residents }) => {
                 <Table>
                   {/* headers */}
                   <TableHeaders>
+                    <TableHeader name="Resident ID" />
                     <TableHeader name="First Name" />
                     <TableHeader name="Middle Name" />
                     <TableHeader name="Last Name" />
@@ -225,6 +228,7 @@ const Admin: NextPage<Props> = ({ users, residents }) => {
                       return user
                         .records!.filter(
                           (record) =>
+                            record.id.toLowerCase().includes(input) ||
                             record.firstName.toLowerCase().includes(input) ||
                             record.middleName.toLowerCase().includes(input) ||
                             record.lastName.toLowerCase().includes(input) ||
@@ -248,6 +252,7 @@ const Admin: NextPage<Props> = ({ users, residents }) => {
                         )
                         .map((record) => (
                           <TableRows key={record.id}>
+                            <TableRow name={record.id} />
                             <TableRow name={record.firstName} />
                             <TableRow name={record.middleName} />
                             <TableRow name={record.lastName} />
