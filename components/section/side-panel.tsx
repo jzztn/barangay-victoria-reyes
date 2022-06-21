@@ -75,6 +75,13 @@ const SidePanel = ({ image, name, admin }: IProps) => {
                 link="/admin/requests"
               />
               <Icon
+                Type={HomeIcon}
+                circleSize="w-10 h-10"
+                iconSize="w-5 h-5"
+                color={false}
+                link="/admin/registrations"
+              />
+              <Icon
                 Type={UserIcon}
                 circleSize="w-10 h-10"
                 iconSize="w-5 h-5"
