@@ -24,6 +24,7 @@ import TableStatus from '../../../components/section/table/status'
 import SideBar from '../../../components/styled/sidebar'
 import type { User } from '../../../prisma/definition'
 import serializeData from '../../../utilities/serialize-data'
+import Image from 'next/image'
 
 interface Props {
   user: User
@@ -44,7 +45,8 @@ const Notifications: NextPage<Props> = ({ user }) => {
         <div className="lg:hidden">
           <NavigationBar fixed={false}>
             <Logo place="justify-start" />
-            <SideBar logout={true}
+            <SideBar
+              logout={true}
               items={[
                 { name: 'Request', link: `/user/${user.email.split('@')[0]}` },
                 {
@@ -78,8 +80,15 @@ const Notifications: NextPage<Props> = ({ user }) => {
 
       <Main>
         <section className="h-full grid lg:grid-cols-[auto,1fr]">
-          <SidePanel image={user.image} name={user.email.split('@')[0]} admin={false}/>
+          <SidePanel
+            image={user.image}
+            name={user.email.split('@')[0]}
+            admin={false}
+          />
           <section className="grid grid-rows-[auto,auto,auto,1fr] gap-8 px-10 py-7">
+            <div className="absolute w-96 h-96 lg:w-[450px] lg:h-[450px] top-[50%] bottom-[50%] -translate-y-[50%] left-[50%] right-[50%] -translate-x-[50%] -z-50 grid justify-items-center items-center opacity-30">
+              <Image src="/images/logo.png" layout="fill" objectFit="cover" />
+            </div>
             <h1 className="font-semibold tracking-wide">Notifications</h1>
             <div className="grid lg:grid-cols-[1fr,auto] gap-5 lg:gap-10">
               <Search input={input} setInput={setInput} />
@@ -125,7 +134,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
                           name={moment(request.createAt).format('LL')}
                         />
                         <div className="ml-auto">
-                          <TableStatus admin={false} status={request.status}/>
+                          <TableStatus admin={false} status={request.status} />
                         </div>
                       </TableRows>
                     ))}
@@ -171,7 +180,10 @@ const Notifications: NextPage<Props> = ({ user }) => {
                             name={moment(request.createAt).format('LL')}
                           />
                           <div className="ml-auto">
-                            <TableStatus admin={false} status={request.status}/>
+                            <TableStatus
+                              admin={false}
+                              status={request.status}
+                            />
                           </div>
                         </TableRows>
                       ))}
@@ -225,7 +237,10 @@ const Notifications: NextPage<Props> = ({ user }) => {
                             name={moment(request.createAt).format('LL')}
                           />
                           <div className="ml-auto">
-                            <TableStatus admin={false} status={request.status}/>
+                            <TableStatus
+                              admin={false}
+                              status={request.status}
+                            />
                           </div>
                         </TableRows>
                       ))}
@@ -270,7 +285,10 @@ const Notifications: NextPage<Props> = ({ user }) => {
                             name={moment(request.createAt).format('LL')}
                           />
                           <div className="ml-auto">
-                            <TableStatus admin={false} status={request.status}/>
+                            <TableStatus
+                              admin={false}
+                              status={request.status}
+                            />
                           </div>
                         </TableRows>
                       ))}
