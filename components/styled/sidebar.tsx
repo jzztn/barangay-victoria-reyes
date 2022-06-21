@@ -2,6 +2,7 @@ import { Menu } from '@headlessui/react'
 import { ChevronDoubleRightIcon, MenuAlt3Icon } from '@heroicons/react/solid'
 import { signOut } from 'next-auth/react'
 import Link from 'next/link'
+import useAdminStore from '../../stores/use-admin-store'
 import Button from '../elements/button'
 
 interface IProps {
@@ -13,6 +14,7 @@ interface IProps {
   logout: boolean
 }
 const SideBar = ({ items, logout }: IProps) => {
+  const handleLogout = useAdminStore((state) => state.logout)
   return (
     <Menu as="div" className="absolute -top-1 right-0 bg-white z-50">
       {({ open }) => (
@@ -51,7 +53,7 @@ const SideBar = ({ items, logout }: IProps) => {
                   <Button
                     label="Log Out"
                     color={false}
-                    handler={() => signOut()}
+                    handler={handleLogout}
                   />
                 </Menu.Item>
               )}
