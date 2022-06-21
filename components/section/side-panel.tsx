@@ -51,7 +51,7 @@ const SidePanel = ({ image, name, admin }: IProps) => {
               />
             </div>
 
-            <div className="w-8 h-8 rounded-full overflow-hidden">
+            <div className="w-9 h-9 rounded-full overflow-hidden">
               <img src={image} alt="Profile" className="w-full h-full" />
             </div>
           </div>
