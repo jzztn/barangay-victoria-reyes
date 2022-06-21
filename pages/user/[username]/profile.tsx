@@ -1,36 +1,36 @@
-import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
-import { signOut } from 'next-auth/react'
-import prisma from '../../../adapters/prisma'
-import Name from '../../../components/elements/account-name'
-import Button from '../../../components/elements/button'
-import Logo from '../../../components/elements/logo'
-import Layout from '../../../components/layout'
-import Header from '../../../components/layout/header'
-import Main from '../../../components/layout/main'
-import Fields from '../../../components/section/input-fields'
-import NavigationBar from '../../../components/section/navbar'
-import NavLinks from '../../../components/section/navbar/nav-links'
-import SidePanel from '../../../components/section/side-panel'
-import SideBar from '../../../components/styled/sidebar'
-import type { Profile, User } from '../../../prisma/definition'
-import serializeData from '../../../utilities/serialize-data'
-import { UserIcon, CheckIcon, PencilAltIcon } from '@heroicons/react/solid'
-import { useState } from 'react'
-import { Gender } from '@prisma/client'
-import useUserStore from '../../../stores/use-user-store'
-import Dropdown from '../../../components/styled/dropdown'
-import { Listbox } from '@headlessui/react'
-import ProfileField from '../../../components/section/input-fields/profileField'
-import moment from 'moment'
+import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import { signOut } from 'next-auth/react';
+import prisma from '../../../adapters/prisma';
+import Name from '../../../components/elements/account-name';
+import Button from '../../../components/elements/button';
+import Logo from '../../../components/elements/logo';
+import Layout from '../../../components/layout';
+import Header from '../../../components/layout/header';
+import Main from '../../../components/layout/main';
+import Fields from '../../../components/section/input-fields';
+import NavigationBar from '../../../components/section/navbar';
+import NavLinks from '../../../components/section/navbar/nav-links';
+import SidePanel from '../../../components/section/side-panel';
+import SideBar from '../../../components/styled/sidebar';
+import type { Profile, User } from '../../../prisma/definition';
+import serializeData from '../../../utilities/serialize-data';
+import { UserIcon, CheckIcon, PencilAltIcon } from '@heroicons/react/solid';
+import { useEffect, useState } from 'react';
+import { Gender } from '@prisma/client';
+import useUserStore from '../../../stores/use-user-store';
+import Dropdown from '../../../components/styled/dropdown';
+import { Listbox } from '@headlessui/react';
+import ProfileField from '../../../components/section/input-fields/profileField';
+import moment from 'moment';
 
 interface Props {
-  user: User
+  user: User;
 }
 
 const Profile: NextPage<Props> = ({ user }) => {
-  console.log(user)
-  const createProfile = useUserStore((state) => state.create.profile)
-  const updateProfile = useUserStore((state) => state.update.profile)
+  // console.log(user);
+  const createProfile = useUserStore((state) => state.create.profile);
+  const updateProfile = useUserStore((state) => state.update.profile);
   const [inputField, setInputField] = useState<Profile>({
     id: '',
     firstName: '',
@@ -41,12 +41,30 @@ const Profile: NextPage<Props> = ({ user }) => {
     contact: '',
     updatedAt: '',
     userId: user.id,
-  })
+  });
   const [selectedGender, setSelectedGender] = useState(
     user.profile?.gender ? user.profile?.gender : Gender.OTHERS
-  )
-  const [genders] = useState(['MALE', 'FEMALE', 'OTHERS'])
-  const [edit, setEdit] = useState(false)
+  );
+  const [genders] = useState(['MALE', 'FEMALE', 'OTHERS']);
+  const [edit, setEdit] = useState(false);
+  const [showCreateProfile, setShowCreateProfile] = useState(!user.profile);
+
+  console.log(showCreateProfile);
+
+  useEffect(() => {
+    if (user.profile) {
+      console.log('hello');
+      setInputField({
+        ...inputField,
+        firstName: user.profile.firstName,
+        middleName: user.profile.middleName,
+        lastName: user.profile.lastName,
+        gender: user.profile.gender,
+        birthdate: user.profile.birthdate,
+        contact: user.profile.contact,
+      });
+    }
+  }, []);
 
   return (
     <Layout store={{ user }}>
@@ -103,14 +121,15 @@ const Profile: NextPage<Props> = ({ user }) => {
               </button>
             </div>
             <Fields>
-              <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-6 relative">
+                {!edit && <div className="absolute inset-0 z-10"></div>}
                 <ProfileField
                   icon={UserIcon}
                   inputField={inputField}
                   setInputField={setInputField}
                   user={user}
                   value={inputField.firstName}
-                  defaultValue={user.profile!.firstName}
+                  defaultValue={inputField.firstName}
                   field="firstName"
                   edit={edit}
                 />
@@ -157,28 +176,10 @@ const Profile: NextPage<Props> = ({ user }) => {
                     Birthday
                   </h2>
 
-                  {!user.profile && !edit && (
-                    <input
-                      type="text"
-                      value={inputField.birthdate}
-                      onChange={(e) =>
-                        setInputField({
-                          ...inputField,
-                          birthdate: e.target.value,
-                        })
-                      }
-                      className="w-72 lg:w-96 py-3 pl-4 "
-                    />
-                  )}
-
                   {user.profile && !edit && (
                     <input
                       type="text"
-                      value={
-                        user.profile
-                          ? moment(user.profile?.birthdate).format('LL')
-                          : ''
-                      }
+                      value={moment(user.profile?.birthdate).format('LL')}
                       onChange={(e) =>
                         setInputField({
                           ...inputField,
@@ -192,7 +193,9 @@ const Profile: NextPage<Props> = ({ user }) => {
                   {user.profile && edit && (
                     <input
                       type="date"
-                      defaultValue={user.profile ? user.profile.birthdate : ''}
+                      value={moment(user.profile?.birthdate)
+                        .format()
+                        .slice(0, 10)}
                       onChange={(e) =>
                         setInputField({
                           ...inputField,
@@ -203,21 +206,18 @@ const Profile: NextPage<Props> = ({ user }) => {
                     />
                   )}
 
-                  {!user.profile && edit && (
-                    <div className="flex flex-col gap-2">
-                      <input
-                        type="date"
-                        defaultValue={inputField.birthdate}
-                        onChange={(e) =>
-                          setInputField({
-                            ...inputField,
-                            birthdate: e.target.value,
-                          })
-                        }
-                        className="w-72 lg:w-96 py-3 pl-4 "
-                      />
-                      <span>Fill out this field first</span>
-                    </div>
+                  {!user?.profile && (
+                    <input
+                      type="date"
+                      defaultValue={user.profile ? user.profile.birthdate : ''}
+                      onChange={(e) =>
+                        setInputField({
+                          ...inputField,
+                          birthdate: e.target.value,
+                        })
+                      }
+                      className="w-72 lg:w-96 py-3 pl-4 "
+                    />
                   )}
                 </div>
 
@@ -230,14 +230,12 @@ const Profile: NextPage<Props> = ({ user }) => {
                   <Dropdown
                     value={selectedGender}
                     onChange={setSelectedGender}
-                    buttonName={selectedGender}
-                  >
+                    buttonName={selectedGender}>
                     {genders.map((gender, index) => (
                       <Listbox.Option
                         key={index}
                         className="hover:bg-primary/40 hover:text-primary text-sm cursor-pointer"
-                        value={gender}
-                      >
+                        value={gender}>
                         {({ active, selected }) => (
                           <h3
                             onClick={() =>
@@ -250,8 +248,7 @@ const Profile: NextPage<Props> = ({ user }) => {
                               active
                                 ? 'bg-primary/40 text-primary'
                                 : 'text-black'
-                            } flex items-center gap-3 p-3`}
-                          >
+                            } flex items-center gap-3 p-3`}>
                             {selected && (
                               <CheckIcon className="bg-primary/30 rounded-full p-1 text-primary w-5 h-5" />
                             )}
@@ -271,20 +268,21 @@ const Profile: NextPage<Props> = ({ user }) => {
                   label="Save Changes"
                   color={true}
                   handler={() => {
-                    updateProfile({ profile: inputField })
-                    setEdit(false)
-                    console.log('edited', inputField)
+                    updateProfile({ profile: inputField });
+                    setEdit(false);
+                    console.log('edited', inputField);
                   }}
                 />
               )}
 
-              {!user.profile && (
+              {!user.profile && showCreateProfile && (
                 <Button
                   label="Create Profile Account"
                   color={true}
                   handler={() => {
-                    createProfile({ profile: inputField })
-                    console.log(inputField)
+                    createProfile({ profile: inputField });
+                    setShowCreateProfile(false);
+                    console.log(inputField);
                   }}
                 />
               )}
@@ -293,10 +291,10 @@ const Profile: NextPage<Props> = ({ user }) => {
         </section>
       </Main>
     </Layout>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const user = await prisma.user.findUnique({
@@ -308,14 +306,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         include: { members: true },
       },
     },
-  })
+  });
   return {
     props: {
       user: serializeData(user),
     },
     revalidate: 1,
-  }
-}
+  };
+};
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const users = await prisma.user.findMany({
@@ -326,16 +324,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
         include: { members: true },
       },
     },
-  })
+  });
 
   const paths = users.map((user) => {
     return {
       params: { username: String(user.email!.split('@')[0]) },
-    }
-  })
+    };
+  });
 
   return {
     paths,
     fallback: 'blocking',
-  }
-}
+  };
+};
