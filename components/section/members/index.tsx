@@ -7,6 +7,7 @@ import { Gender, Relationship } from '@prisma/client'
 import Household from './member'
 import Field from '../input-fields/field'
 import Dropdown from '../../styled/dropdown'
+import cuid from 'cuid'
 
 interface IProps {
   inputField: Resident
@@ -15,8 +16,8 @@ interface IProps {
 
 const Members = ({ inputField, setInputField }: IProps) => {
   const [memberField, setMemberField] = useState<Member>({
-    id: '',
-    verified: true,
+    id: cuid(),
+    verified: false,
     firstName: '',
     middleName: '',
     lastName: '',
@@ -26,7 +27,7 @@ const Members = ({ inputField, setInputField }: IProps) => {
     address: '',
     occupation: '',
     contact: '',
-    homeowner: true,
+    homeowner: false,
     voter: true,
     relationship: Relationship.BROTHER,
     startedAt: new Date(),
@@ -166,8 +167,8 @@ const Members = ({ inputField, setInputField }: IProps) => {
                 members: [...inputField.members!, memberField],
               })
               setMemberField({
-                id: '',
-                verified: true,
+                id: cuid(),
+                verified: false,
                 firstName: '',
                 middleName: '',
                 lastName: '',
@@ -177,10 +178,10 @@ const Members = ({ inputField, setInputField }: IProps) => {
                 address: '',
                 occupation: '',
                 contact: '',
-                homeowner: true,
+                homeowner: false,
                 voter: true,
                 relationship: Relationship.BROTHER,
-                startedAt: '',
+                startedAt: new Date(),
                 authorId: '',
               })
             }}

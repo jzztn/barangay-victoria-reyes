@@ -18,6 +18,7 @@ import Members from '../../section/members'
 import Modal from '.'
 import Dropdown from '../dropdown'
 import { useRouter } from 'next/router'
+import moment from 'moment'
 
 interface IProps {
   user: User
@@ -28,12 +29,12 @@ const Registration = ({ user }: IProps) => {
   const updateUserAuthorization = useUserStore((state) => state.update.user)
   const [inputField, setInputField] = useState<Resident>({
     id: '',
-    verified: true,
+    verified: false,
     firstName: user.profile!.firstName,
     middleName: user.profile!.middleName,
     lastName: user.profile!.lastName,
     gender: user.profile!.gender,
-    birthdate: '',
+    birthdate: user.profile!.birthdate,
     birthplace: '',
     address: '',
     occupation: '',
@@ -46,6 +47,8 @@ const Registration = ({ user }: IProps) => {
     members: [],
     authorId: '',
   })
+
+  console.log(user)
 
   const [selectedGender, setSelectedGender] = useState(Gender.FEMALE)
   const [genders] = useState(['MALE', 'FEMALE', 'OTHERS'])
@@ -162,7 +165,9 @@ const Registration = ({ user }: IProps) => {
               type="date"
               label="Birthday"
               icon={CalendarIcon}
-              value={user.profile!.birthdate}
+              value={moment(user.profile?.birthdate)
+                .format()
+                .slice(0, 10)}
               inputField={inputField}
               setInputField={setInputField}
               fieldName="birthdate"
