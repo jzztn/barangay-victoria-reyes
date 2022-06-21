@@ -1,50 +1,52 @@
-import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
-import { signOut } from 'next-auth/react'
-import prisma from '../../../adapters/prisma'
-import Name from '../../../components/elements/account-name'
-import Button from '../../../components/elements/button'
-import Logo from '../../../components/elements/logo'
-import Layout from '../../../components/layout'
-import Header from '../../../components/layout/header'
-import Main from '../../../components/layout/main'
-import Fields from '../../../components/section/input-fields'
-import NavigationBar from '../../../components/section/navbar'
-import NavLinks from '../../../components/section/navbar/nav-links'
-import SidePanel from '../../../components/section/side-panel'
-import SideBar from '../../../components/styled/sidebar'
-import type { Profile, User } from '../../../prisma/definition'
-import serializeData from '../../../utilities/serialize-data'
-import { UserIcon, CheckIcon, PencilAltIcon } from '@heroicons/react/solid'
-import { useState } from 'react'
-import { Gender } from '@prisma/client'
-import useUserStore from '../../../stores/use-user-store'
-import Dropdown from '../../../components/styled/dropdown'
-import { Listbox } from '@headlessui/react'
-import ProfileField from '../../../components/section/input-fields/profileField'
-import moment from 'moment'
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import { signOut } from "next-auth/react";
+import prisma from "../../../adapters/prisma";
+import Name from "../../../components/elements/account-name";
+import Button from "../../../components/elements/button";
+import Logo from "../../../components/elements/logo";
+import Layout from "../../../components/layout";
+import Header from "../../../components/layout/header";
+import Main from "../../../components/layout/main";
+import Fields from "../../../components/section/input-fields";
+import NavigationBar from "../../../components/section/navbar";
+import NavLinks from "../../../components/section/navbar/nav-links";
+import SidePanel from "../../../components/section/side-panel";
+import SideBar from "../../../components/styled/sidebar";
+import type { Profile, User } from "../../../prisma/definition";
+import serializeData from "../../../utilities/serialize-data";
+import { UserIcon, CheckIcon, PencilAltIcon } from "@heroicons/react/solid";
+import { useState } from "react";
+import { Gender } from "@prisma/client";
+import useUserStore from "../../../stores/use-user-store";
+import Dropdown from "../../../components/styled/dropdown";
+import { Listbox } from "@headlessui/react";
+import ProfileField from "../../../components/section/input-fields/profileField";
+import moment from "moment";
 
 interface Props {
-  user: User
+  user: User;
 }
 
 const Profile: NextPage<Props> = ({ user }) => {
-  console.log(user)
-  const createProfile = useUserStore((state) => state.create.profile)
-  const updateProfile = useUserStore((state) => state.update.profile)
+  console.log(user);
+  const createProfile = useUserStore((state) => state.create.profile);
+  const updateProfile = useUserStore((state) => state.update.profile);
   const [inputField, setInputField] = useState<Profile>({
-    id: '',
-    firstName: '',
-    middleName: '',
-    lastName: '',
+    id: "",
+    firstName: "",
+    middleName: "",
+    lastName: "",
     gender: Gender.FEMALE,
-    birthdate: '',
-    contact: '',
-    updatedAt: '',
+    birthdate: "",
+    contact: "",
+    updatedAt: "",
     userId: user.id,
-  })
-  const [selectedGender, setSelectedGender] = useState(Gender.FEMALE)
-  const [genders] = useState(['MALE', 'FEMALE', 'OTHERS'])
-  const [edit, setEdit] = useState(false)
+  });
+  const [selectedGender, setSelectedGender] = useState(Gender.FEMALE);
+  const [genders] = useState(["MALE", "FEMALE", "OTHERS"]);
+  const [edit, setEdit] = useState(false);
+
+  console.log(user);
 
   return (
     <Layout store={{ user }}>
@@ -56,18 +58,18 @@ const Profile: NextPage<Props> = ({ user }) => {
             <SideBar
               logout={true}
               items={[
-                { name: 'Request', link: `/user/${user.email.split('@')[0]}` },
+                { name: "Request", link: `/user/${user.email.split("@")[0]}` },
                 {
-                  name: 'Notifications',
-                  link: `/user/${user.email.split('@')[0]}/notifications`,
+                  name: "Notifications",
+                  link: `/user/${user.email.split("@")[0]}/notifications`,
                 },
                 {
-                  name: 'Profile',
-                  link: `/user/${user.email.split('@')[0]}/profile`,
+                  name: "Profile",
+                  link: `/user/${user.email.split("@")[0]}/profile`,
                 },
                 {
-                  name: 'Payment',
-                  link: `/user/${user.email.split('@')[0]}/payment`,
+                  name: "Payment",
+                  link: `/user/${user.email.split("@")[0]}/payment`,
                 },
               ]}
             />
@@ -90,7 +92,7 @@ const Profile: NextPage<Props> = ({ user }) => {
         <section className="h-full grid lg:grid-cols-[auto,1fr]">
           <SidePanel
             image={user.image}
-            name={user.email.split('@')[0]}
+            name={user.email.split("@")[0]}
             admin={false}
           />
           <section className="flex flex-col gap-3 px-10 py-7">
@@ -108,7 +110,9 @@ const Profile: NextPage<Props> = ({ user }) => {
                   setInputField={setInputField}
                   user={user}
                   value={inputField.firstName}
-                  defaultValue={user.profile!.firstName}
+                  defaultValue={
+                    user.profile ? user.profile.firstName : inputField.firstName
+                  }
                   field="firstName"
                   edit={edit}
                 />
@@ -122,7 +126,7 @@ const Profile: NextPage<Props> = ({ user }) => {
                   defaultValue={
                     user.profile
                       ? user.profile.lastName
-                      : user.name.split(' ').slice(-1).join(' ')
+                      : user.name.split(" ").slice(-1).join(" ")
                   }
                   field="lastName"
                   edit={edit}
@@ -134,7 +138,7 @@ const Profile: NextPage<Props> = ({ user }) => {
                   setInputField={setInputField}
                   user={user}
                   value={inputField.middleName}
-                  defaultValue={user.profile ? user.profile.middleName : ''}
+                  defaultValue={user.profile ? user.profile.middleName : ""}
                   field="middleName"
                   edit={edit}
                 />
@@ -145,7 +149,7 @@ const Profile: NextPage<Props> = ({ user }) => {
                   setInputField={setInputField}
                   user={user}
                   value={inputField.contact}
-                  defaultValue={user.profile ? user.profile.contact : ''}
+                  defaultValue={user.profile ? user.profile.contact : ""}
                   field="contact"
                   edit={edit}
                 />
@@ -156,9 +160,11 @@ const Profile: NextPage<Props> = ({ user }) => {
                       // edit is true and theres already have a profile
                       <input
                         type="date"
-                        defaultValue={user.profile
-                          ? moment(user.profile.birthdate).format('LL')
-                          : ''}
+                        defaultValue={
+                          user.profile
+                            ? moment(user.profile.birthdate).format("LL")
+                            : ""
+                        }
                         onChange={(e) =>
                           setInputField({
                             ...inputField,
@@ -193,9 +199,11 @@ const Profile: NextPage<Props> = ({ user }) => {
                       // edit is false and theres already have a profile
                       <input
                         type="date"
-                        value={user.profile
-                          ? moment(user.profile.birthdate).format('LL')
-                          : ''}
+                        value={
+                          user.profile
+                            ? moment(user.profile.birthdate).format("LL")
+                            : ""
+                        }
                         onChange={(e) =>
                           setInputField({
                             ...inputField,
@@ -230,25 +238,25 @@ const Profile: NextPage<Props> = ({ user }) => {
                   <Dropdown
                     value={selectedGender}
                     onChange={setSelectedGender}
-                    buttonName={selectedGender}
-                  >
+                    buttonName={selectedGender}>
                     {genders.map((gender, index) => (
                       <Listbox.Option
                         key={index}
                         className="hover:bg-primary/40 hover:text-primary text-sm cursor-pointer"
-                        value={gender}
-                      >
+                        value={gender}>
                         {({ active, selected }) => (
                           <h3
                             onClick={() =>
-                              setInputField({ ...inputField, gender: gender as Gender })
+                              setInputField({
+                                ...inputField,
+                                gender: gender as Gender,
+                              })
                             }
                             className={`${
                               active
-                                ? 'bg-primary/40 text-primary'
-                                : 'text-black'
-                            } flex items-center gap-3 p-3`}
-                          >
+                                ? "bg-primary/40 text-primary"
+                                : "text-black"
+                            } flex items-center gap-3 p-3`}>
                             {selected && (
                               <CheckIcon className="bg-primary/30 rounded-full p-1 text-primary w-5 h-5" />
                             )}
@@ -268,9 +276,9 @@ const Profile: NextPage<Props> = ({ user }) => {
                   label="Save Changes"
                   color={true}
                   handler={() => {
-                    updateProfile({ profile: inputField })
-                    setEdit(false)
-                    console.log('edited', inputField)
+                    updateProfile({ profile: inputField });
+                    setEdit(false);
+                    console.log("edited", inputField);
                   }}
                 />
               ) : (
@@ -278,8 +286,8 @@ const Profile: NextPage<Props> = ({ user }) => {
                   label="Create Profile Account"
                   color={true}
                   handler={() => {
-                    createProfile({ profile: inputField })
-                    console.log(inputField)
+                    createProfile({ profile: inputField });
+                    console.log(inputField);
                   }}
                 />
               )}
@@ -288,10 +296,10 @@ const Profile: NextPage<Props> = ({ user }) => {
         </section>
       </Main>
     </Layout>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const user = await prisma.user.findUnique({
@@ -303,13 +311,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         include: { members: true },
       },
     },
-  })
+  });
   return {
     props: {
       user: serializeData(user),
     },
-  }
-}
+  };
+};
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const users = await prisma.user.findMany({
@@ -320,16 +328,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
         include: { members: true },
       },
     },
-  })
+  });
 
   const paths = users.map((user) => {
     return {
-      params: { username: String(user.email!.split('@')[0]) },
-    }
-  })
+      params: { username: String(user.email!.split("@")[0]) },
+    };
+  });
 
   return {
     paths,
-    fallback: 'blocking',
-  }
-}
+    fallback: "blocking",
+  };
+};
