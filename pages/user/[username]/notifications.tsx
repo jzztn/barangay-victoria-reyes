@@ -91,7 +91,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
             </div>
 
             {/* notification count */}
-            <h4 className="text-xs lg:text-sm font-medium">
+            <h4 className="text-xs lg:text-sm font-medium mb-8">
               ALL ( <span className="font-bold">{user.tickets!.length}</span> )
             </h4>
 
