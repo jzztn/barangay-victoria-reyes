@@ -320,6 +320,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       user: serializeData(user),
     },
+    revalidate: 1
   }
 }
 
