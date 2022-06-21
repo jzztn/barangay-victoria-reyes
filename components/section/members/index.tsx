@@ -64,7 +64,7 @@ const Members = ({ inputField, setInputField }: IProps) => {
 
   return (
     <div className="grid gap-5">
-      <h2 className="font-medium tracking-wide">Household</h2>
+      <h2 className="font-medium tracking-wide text-xs lg:text-sm">Household</h2>
 
       <div className="grid gap-3 border-[1px] border-gray/50 rounded-md p-3 lg:p-6">
         <div className="grid gap-2 lg:grid-cols-2">
