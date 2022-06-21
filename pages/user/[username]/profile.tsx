@@ -42,7 +42,9 @@ const Profile: NextPage<Props> = ({ user }) => {
     updatedAt: '',
     userId: user.id,
   })
-  const [selectedGender, setSelectedGender] = useState(Gender.FEMALE)
+  const [selectedGender, setSelectedGender] = useState(
+    user.profile?.gender ? user.profile?.gender : Gender.OTHERS
+  )
   const [genders] = useState(['MALE', 'FEMALE', 'OTHERS'])
   const [edit, setEdit] = useState(false)
 
@@ -108,9 +110,7 @@ const Profile: NextPage<Props> = ({ user }) => {
                   setInputField={setInputField}
                   user={user}
                   value={inputField.firstName}
-                  defaultValue={
-                    user.profile ? user.profile.firstName : inputField.firstName
-                  }
+                  defaultValue={user.profile!.firstName}
                   field="firstName"
                   edit={edit}
                 />
@@ -150,82 +150,73 @@ const Profile: NextPage<Props> = ({ user }) => {
                   field="contact"
                   edit={edit}
                 />
+
+                {/* birthday */}
                 <div className="flex flex-col gap-3">
                   <h2 className="text-sm font-medium tracking-wide">
                     Birthday
                   </h2>
-                  {edit ? (
-                    <div>
-                      {user.profile !== null ? (
-                        // edit is true and theres already have a profile
-                        <input
-                          type="date"
-                          defaultValue={
-                            user.profile
-                              ? moment(user.profile.birthdate).format('LL')
-                              : ''
-                          }
-                          onChange={(e) =>
-                            setInputField({
-                              ...inputField,
-                              birthdate: e.target.value,
-                            })
-                          }
-                          className="w-72 lg:w-96 py-3 pl-4 "
-                        />
-                      ) : (
-                        // edit is true and theres no profile yet
-                        <div>
-                          <input
-                            type="date"
-                            defaultValue={inputField.birthdate}
-                            onChange={(e) =>
-                              setInputField({
-                                ...inputField,
-                                birthdate: e.target.value,
-                              })
-                            }
-                            className="w-72 lg:w-96 py-3 pl-4"
-                          />
-                          <span className="text-red-500 text-xs italic mt-1">
-                            Fill up this field first
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <div>
-                      {user.profile !== null ? (
-                        // edit is false and theres already have a profile
-                        <input
-                          type="date"
-                          value={
-                            user.profile
-                              ? moment(user.profile.birthdate).format('LL')
-                              : ''
-                          }
-                          onChange={(e) =>
-                            setInputField({
-                              ...inputField,
-                              birthdate: e.target.value,
-                            })
-                          }
-                          className="w-72 lg:w-96 py-3 pl-4 outline-none"
-                        />
-                      ) : (
-                        // edit is false and theres no profile yet
-                        <input
-                          type="date"
-                          defaultValue={inputField.birthdate}
-                          onChange={(e) =>
-                            setInputField({
-                              ...inputField,
-                              birthdate: e.target.value,
-                            })
-                          }
-                          className="w-72 lg:w-96 py-3 pl-4"
-                        />
-                      )}
+
+                  {!user.profile && !edit && (
+                    <input
+                      type="text"
+                      value={inputField.birthdate}
+                      onChange={(e) =>
+                        setInputField({
+                          ...inputField,
+                          birthdate: e.target.value,
+                        })
+                      }
+                      className="w-72 lg:w-96 py-3 pl-4 "
+                    />
+                  )}
+
+                  {user.profile && !edit && (
+                    <input
+                      type="text"
+                      value={
+                        user.profile
+                          ? moment(user.profile?.birthdate).format('LL')
+                          : ''
+                      }
+                      onChange={(e) =>
+                        setInputField({
+                          ...inputField,
+                          birthdate: e.target.value,
+                        })
+                      }
+                      className="w-72 lg:w-96 py-3 pl-4 "
+                    />
+                  )}
+
+                  {user.profile && edit && (
+                    <input
+                      type="date"
+                      defaultValue={user.profile ? user.profile.birthdate : ''}
+                      onChange={(e) =>
+                        setInputField({
+                          ...inputField,
+                          birthdate: e.target.value,
+                        })
+                      }
+                      className="w-72 lg:w-96 py-3 pl-4 "
+                    />
+                  )}
+
+                  {!user.profile && edit && (
+                    <div className="flex flex-col gap-2">
+                      <input
+                        type="date"
+                        defaultValue={inputField.birthdate}
+                        onChange={(e) =>
+                          setInputField({
+                            ...inputField,
+                            birthdate: e.target.value,
+                          })
+                        }
+                        className="w-72 lg:w-96 py-3 pl-4 "
+                      />
+                      <span>Fill out this field first</span>
                     </div>
                   )}
                 </div>
@@ -275,7 +266,7 @@ const Profile: NextPage<Props> = ({ user }) => {
             </Fields>
 
             <div className="mt-16">
-              {edit ? (
+              {user.profile && edit && (
                 <Button
                   label="Save Changes"
                   color={true}
@@ -285,7 +276,9 @@ const Profile: NextPage<Props> = ({ user }) => {
                     console.log('edited', inputField)
                   }}
                 />
-              ) : (
+              )}
+
+              {!user.profile && (
                 <Button
                   label="Create Profile Account"
                   color={true}
@@ -320,7 +313,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       user: serializeData(user),
     },
-    revalidate: 1
+    revalidate: 1,
   }
 }
 
