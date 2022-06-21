@@ -10,7 +10,8 @@ import SideBar from '../../components/styled/sidebar'
 import Logo from '../../components/elements/logo'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
-import { PencilAltIcon } from '@heroicons/react/solid'
+import { LockOpenIcon, PencilAltIcon, UserIcon } from '@heroicons/react/solid'
+import Icon from '../../components/elements/icon'
 
 const Profile: NextPage = () => {
   // router
@@ -67,7 +68,7 @@ const Profile: NextPage = () => {
         <section className="h-full grid lg:grid-cols-[auto,1fr]">
           <SidePanel image="\images\admin.png" admin={true} />
           <section className="grid grid-rows-[auto,auto,auto,1fr] gap-8 px-10 py-7">
-            <div className='flex gap-5 items-center'>
+            <div className="flex gap-5 items-center">
               <h1 className="font-semibold tracking-wide">Admin Account</h1>
               <button onClick={() => setEdit(!edit)}>
                 <PencilAltIcon className="w-5 h-5 hover:-translate-y-1 hover:text-primary cursor-pointer transition-all duration-300" />
@@ -76,22 +77,75 @@ const Profile: NextPage = () => {
 
             <div className="flex flex-col gap-10">
               <div className="flex flex-col gap-1">
-                <h2>Username</h2>
-                <input
-                  type="text"
-                  value="admin"
-                  className="border-[1px] border-gray py-3 lg:w-96 pl-2 rounded-md"
-                />
+                <h2 className="text-xs lg:text-sm font-medium tracking-wide">
+                  Username
+                </h2>
+                <div className="flex items-center gap-2">
+                  <Icon
+                    Type={UserIcon}
+                    circleSize="w-7 h-7"
+                    iconSize="w-3 h-3"
+                    link="#"
+                    color={true}
+                  />
+
+                  <input
+                    type="text"
+                    value="admin"
+                    className="border-[1px] border-gray/50 rounded-md py-2 w- lg:w-96 outline-none pl-4"
+                  />
+                </div>
               </div>
 
               <div className="flex flex-col gap-1">
-                <h2>Password</h2>
-                <input
-                  type="password"
-                  value="admin"
-                  className="border-[1px] border-gray py-3 lg:w-96 pl-2 rounded-md"
-                />
+                <h2 className="text-xs lg:text-sm font-medium tracking-wide">
+                  Password
+                </h2>
+                <div className="flex items-center gap-2">
+                  <Icon
+                    Type={LockOpenIcon}
+                    circleSize="w-7 h-7"
+                    iconSize="w-3 h-3"
+                    link="#"
+                    color={true}
+                  />
+                  <input
+                    type="password"
+                    value="admin"
+                    className="border-[1px] border-gray/50 rounded-md py-2 w-full lg:w-96 outline-none pl-4"
+                  />
+                </div>
               </div>
+
+              {edit && (
+                <div className="flex flex-col gap-1">
+                  <h2 className="text-xs lg:text-sm font-medium tracking-wide">
+                    Confirm Password
+                  </h2>
+                  <div className="flex items-center gap-2">
+                    <Icon
+                      Type={LockOpenIcon}
+                      circleSize="w-7 h-7"
+                      iconSize="w-3 h-3"
+                      link="#"
+                      color={true}
+                    />
+                    <input
+                      type="password"
+                      value="admin"
+                      className="border-[1px] border-gray/50 rounded-md py-2 w-full lg:w-96 outline-none pl-4"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* buttons */}
+              {edit && (
+                <div className="flex items-center gap-6 ml-auto mt-16">
+                  <Button label="Cancel" color={false} />
+                  <Button label="Save Changes" color={true} />
+                </div>
+              )}
             </div>
           </section>
         </section>
