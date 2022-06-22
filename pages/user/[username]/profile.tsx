@@ -1,4 +1,4 @@
-import type { GetServerSideProps, GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import type { GetServerSideProps,  NextPage } from 'next';
 import { signOut } from 'next-auth/react';
 import prisma from '../../../adapters/prisma';
 import Name from '../../../components/elements/account-name';
