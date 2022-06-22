@@ -29,6 +29,7 @@ import TableRow from '../../components/section/table/row/row'
 import { useRouter } from 'next/router'
 import moment from 'moment'
 import useAdminStore from '../../stores/use-admin-store'
+import Image from 'next/image'
 
 interface Props {
   users: User[]
@@ -46,7 +47,7 @@ const Admin: NextPage<Props> = ({ users, residents }) => {
   })
 
   const { isLogin, login, logout } = useAdminStore()
-  
+
   const handleLogin = () => {
     if (
       adminAccoutn.username === 'admin' &&
@@ -148,12 +149,16 @@ const Admin: NextPage<Props> = ({ users, residents }) => {
         <section className="h-full grid lg:grid-cols-[auto,1fr]">
           <SidePanel image="\images\admin.png" admin={true} />
           <section className="grid grid-rows-[auto,auto,auto,1fr] gap-8 px-10 py-7">
+            <div className="absolute w-96 h-96 lg:w-[450px] lg:h-[450px] top-[50%] bottom-[50%] -translate-y-[50%] left-[50%] right-[50%] -translate-x-[50%] -z-50 grid justify-items-center items-center opacity-30">
+              <Image src="/images/logo.png" layout="fill" objectFit="cover" />
+            </div>
+
             <h1 className="font-semibold tracking-wide">Residents</h1>
 
             <Search input={input} setInput={setInput} />
 
             {/* user count */}
-            <h4 className="text-xs lg:text-sm font-medium">
+            <h4 className="text-xs lg:text-sm font-medium mb-8">
               ALL ( <span className="font-bold">{residents.length}</span> )
             </h4>
 
@@ -165,6 +170,7 @@ const Admin: NextPage<Props> = ({ users, residents }) => {
                 <Table>
                   {/* headers */}
                   <TableHeaders>
+                    <TableHeader name="Resident ID" />
                     <TableHeader name="First Name" />
                     <TableHeader name="Middle Name" />
                     <TableHeader name="Last Name" />
@@ -179,10 +185,11 @@ const Admin: NextPage<Props> = ({ users, residents }) => {
                   </TableHeaders>
 
                   {/* rows */}
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col">
                     {users.map((user) => {
                       return user.records!.map((record) => (
                         <TableRows key={record.id}>
+                          <TableRow name={record.id} />
                           <TableRow name={record.firstName} />
                           <TableRow name={record.middleName} />
                           <TableRow name={record.lastName} />
@@ -206,6 +213,7 @@ const Admin: NextPage<Props> = ({ users, residents }) => {
                 <Table>
                   {/* headers */}
                   <TableHeaders>
+                    <TableHeader name="Resident ID" />
                     <TableHeader name="First Name" />
                     <TableHeader name="Middle Name" />
                     <TableHeader name="Last Name" />
@@ -220,11 +228,12 @@ const Admin: NextPage<Props> = ({ users, residents }) => {
                   </TableHeaders>
 
                   {/* rows */}
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col">
                     {users.map((user) => {
                       return user
                         .records!.filter(
                           (record) =>
+                            record.id.toLowerCase().includes(input) ||
                             record.firstName.toLowerCase().includes(input) ||
                             record.middleName.toLowerCase().includes(input) ||
                             record.lastName.toLowerCase().includes(input) ||
@@ -248,6 +257,7 @@ const Admin: NextPage<Props> = ({ users, residents }) => {
                         )
                         .map((record) => (
                           <TableRows key={record.id}>
+                            <TableRow name={record.id} />
                             <TableRow name={record.firstName} />
                             <TableRow name={record.middleName} />
                             <TableRow name={record.lastName} />

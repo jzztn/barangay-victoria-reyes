@@ -1,5 +1,6 @@
 import type { GetServerSideProps, GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { signOut } from 'next-auth/react'
+import Image from 'next/image'
 import prisma from '../../../adapters/prisma'
 import Name from '../../../components/elements/account-name'
 import Button from '../../../components/elements/button'
@@ -67,6 +68,10 @@ const Payment: NextPage<Props> = ({ user }) => {
         <section className="h-full grid lg:grid-cols-[auto,1fr]">
           <SidePanel image={user.image} name={user.email.split('@')[0]} admin={false}/>
           <section className="flex flex-col gap-10 px-10 py-7 lg:gap-10">
+            <div className="absolute w-96 h-96 lg:w-[450px] lg:h-[450px] top-[50%] bottom-[50%] -translate-y-[50%] left-[50%] right-[50%] -translate-x-[50%] -z-50 grid justify-items-center items-center opacity-30">
+              <Image src="/images/logo.png" layout="fill" objectFit="cover" />
+            </div>
+
             <h1 className="font-semibold tracking-wide">Payment Form</h1>
             <div className="grid gap-3 lg:grid-cols-2">
               <div className="grid gap-12">
@@ -111,7 +116,7 @@ const Payment: NextPage<Props> = ({ user }) => {
                   </CreditCards>
                 </div>
                 <div className="grid grid-cols-[1fr,auto] max-w-2xl items-center">
-                  <span className="text-sm text-black/80 font-medium">
+                  <span className="text-sm text-black/80 font-semibold">
                     Total Amount
                   </span>
                   <span className="text-2xl font-semibold font-poppins">
