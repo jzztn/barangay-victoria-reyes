@@ -1,4 +1,4 @@
-import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
+import type { GetServerSideProps, GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { signOut } from 'next-auth/react'
 import prisma from '../../../adapters/prisma'
 import Name from '../../../components/elements/account-name'
@@ -83,9 +83,9 @@ const User: NextPage<Props> = ({ user }) => {
 
 export default User
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const user = await prisma.user.findUnique({
-    where: { email: `${String(params!.username)}@gmail.com` },
+    where: { email: `${String(query!.username)}@gmail.com` },
     include: {
       profile: true,
       records: {
@@ -98,28 +98,29 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       user: serializeData(user),
     },
+    // revalidate: 1
   }
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const users = await prisma.user.findMany({
-    include: {
-      profile: true,
-      records: {
-        where: { withId: null },
-        include: { members: true },
-      },
-    },
-  })
+// export const getStaticPaths: GetStaticPaths = async () => {
+//   const users = await prisma.user.findMany({
+//     include: {
+//       profile: true,
+//       records: {
+//         where: { withId: null },
+//         include: { members: true },
+//       },
+//     },
+//   })
 
-  const paths = users.map((user) => {
-    return {
-      params: { username: String(user.email!.split('@')[0]) },
-    }
-  })
+//   const paths = users.map((user) => {
+//     return {
+//       params: { username: String(user.email!.split('@')[0]) },
+//     }
+//   })
 
-  return {
-    paths,
-    fallback: 'blocking',
-  }
-}
+//   return {
+//     paths,
+//     fallback: 'blocking',
+//   }
+// }
