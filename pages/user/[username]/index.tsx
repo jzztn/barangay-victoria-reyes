@@ -29,7 +29,7 @@ const User: NextPage<Props> = ({ user }) => {
         <div className="lg:hidden">
           <NavigationBar fixed={false}>
             <Logo place="justify-start" />
-            <SideBar logout={true}
+            <SideBar admin={false}
               items={[
                 { name: 'Request', link: `/user/${user.email.split('@')[0]}` },
                 {

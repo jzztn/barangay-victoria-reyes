@@ -57,7 +57,7 @@ const Requests: NextPage<Props> = ({ users, residents, tickets }) => {
           <NavigationBar fixed={false}>
             <Logo place="justify-start" />
             <SideBar
-              logout={true}
+              admin={true}
               items={[
                 { name: 'Residents', link: '/admin' },
                 {

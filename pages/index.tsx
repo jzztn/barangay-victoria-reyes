@@ -34,7 +34,7 @@ const LadingPage: NextPage = () => {
         <div className="lg:hidden">
           <NavigationBar fixed={true}>
             <Logo place="justify-start" />
-            <SideBar logout={false} items={[
+            <SideBar items={[
               {name:"About Us" ,link:"#hero"},
               {name:"Advantages" ,link:"#advantages"},
               {name:"How" ,link:"#how"},

@@ -46,7 +46,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
           <NavigationBar fixed={false}>
             <Logo place="justify-start" />
             <SideBar
-              logout={true}
+              admin={false}
               items={[
                 { name: 'Request', link: `/user/${user.email.split('@')[0]}` },
                 {

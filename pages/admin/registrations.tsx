@@ -52,7 +52,7 @@ const Registrations: NextPage<Props> = ({ users, residents }) => {
           <NavigationBar fixed={false}>
             <Logo place="justify-start" />
             <SideBar
-              logout={true}
+              admin={true}
               items={[
                 { name: 'Residents', link: '/admin' },
                 {
