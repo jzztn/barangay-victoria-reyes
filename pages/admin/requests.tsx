@@ -116,7 +116,7 @@ const Requests: NextPage<Props> = ({ users, residents, tickets }) => {
             </h4>
 
             {/* table */}
-            <div>
+            <div className="overflow-hidden">
               {/* default datas */}
               {input === '' && placeholder === 'Filter By' && (
                 <Table>
