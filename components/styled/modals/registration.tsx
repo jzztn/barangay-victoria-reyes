@@ -212,7 +212,7 @@ const Registration = ({ user }: IProps) => {
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
-                  className="border-[1px] border-gray/50 rounded-md py-3 outline-none bg-white"
+                  className="border-2 border-gray/50 rounded-md py-3 outline-none"
                   onChange={(e) =>
                     setInputField({
                       ...inputField,
@@ -229,7 +229,7 @@ const Registration = ({ user }: IProps) => {
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
-                  className="border-[1px] border-gray/50 rounded-md py-3 outline-none bg-white"
+                  className="border-2 border-gray/50 rounded-md py-3 outline-none"
                   onChange={(e) =>
                     setInputField({
                       ...inputField,
