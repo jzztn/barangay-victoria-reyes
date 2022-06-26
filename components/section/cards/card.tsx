@@ -46,14 +46,14 @@ const Card = ({ title, paragraph, request, type, id, amount }: IProps) => {
         <div className="relative z-50">
           <div className="fixed inset-0 bg-black/30" />
           <div className="overflow-hidden fixed inset-0 md:max-w-xl lg:max-w-6xl mx-auto lg:my-40">
-            <div className="bg-white  h-full py-10 px-10 flex flex-col gap-16 justify-center items-center text-center font-poppins rounded-md">
+            <div className="bg-white h-full py-10 px-10 flex flex-col gap-16 justify-center items-center text-center font-poppins rounded-md">
               <div className="flex flex-col gap-2">
                 <span className="text-sm">You are requesting</span>
-                <h1 className="text-4xl font-bold trackng-wide">{title}</h1>
+                <h1 className="whitespace-nowrap text-3xl lg:text-4xl font-bold trackng-wide">{title}</h1>
               </div>
               <p className="max-w-4xl leading-relaxed tracking-wide">
                 Your total amount is{' '}
-                <span className="font-semibold">{amount}</span>. Please pay to
+                <span className="font-bold">{amount}</span>. Please pay to
                 our barangay site upon your claiming day. The requested document
                 will be available in{' '}
                 <span className="font-semibold">1 (1) hour</span> after
