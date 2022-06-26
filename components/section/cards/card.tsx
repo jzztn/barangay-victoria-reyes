@@ -61,7 +61,7 @@ const Card = ({ title, paragraph, request, type, id, amount }: IProps) => {
                 of your requested document. Thankyou and God Bless!
               </p>
 
-              <div className=" flex gap-3 ml-auto">
+              <div className=" flex gap-3 ml-auto z-50">
                 <Button
                   label="Request"
                   color={true}
