@@ -149,10 +149,6 @@ const Admin: NextPage<Props> = ({ users, residents }) => {
         <section className="h-full grid lg:grid-cols-[auto,1fr]">
           <SidePanel image="\images\admin.png" admin={true} />
           <section className="grid grid-rows-[auto,auto,auto,1fr] gap-8 px-10 py-7">
-            <div className="absolute w-96 h-96 lg:w-[450px] lg:h-[450px] top-[50%] bottom-[50%] -translate-y-[50%] left-[50%] right-[50%] -translate-x-[50%] -z-50 grid justify-items-center items-center opacity-30">
-              <Image src="/images/logo.png" layout="fill" objectFit="cover" />
-            </div>
-
             <h1 className="font-semibold tracking-wide">Residents</h1>
 
             <Search input={input} setInput={setInput} />
