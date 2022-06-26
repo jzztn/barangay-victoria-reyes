@@ -21,7 +21,6 @@ interface Props {
 }
 
 const User: NextPage<Props> = ({ user }) => {
-  console.log(user.email.split('@')[0])
   return (
     <Layout store={{ user }}>
       <Header>
@@ -39,10 +38,6 @@ const User: NextPage<Props> = ({ user }) => {
                 {
                   name: 'Profile',
                   link: `/user/${user.email.split('@')[0]}/profile`,
-                },
-                {
-                  name: 'Payment',
-                  link: `/user/${user.email.split('@')[0]}/payment`,
                 },
               ]}
             />
@@ -92,8 +87,10 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         where: { withId: null },
         include: { members: true },
       },
+      tickets: true
     },
   })
+
   return {
     props: {
       user: serializeData(user),
@@ -102,25 +99,3 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   }
 }
 
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   const users = await prisma.user.findMany({
-//     include: {
-//       profile: true,
-//       records: {
-//         where: { withId: null },
-//         include: { members: true },
-//       },
-//     },
-//   })
-
-//   const paths = users.map((user) => {
-//     return {
-//       params: { username: String(user.email!.split('@')[0]) },
-//     }
-//   })
-
-//   return {
-//     paths,
-//     fallback: 'blocking',
-//   }
-// }

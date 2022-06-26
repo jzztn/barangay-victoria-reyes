@@ -50,7 +50,6 @@ const Requests: NextPage<Props> = ({ users, residents, tickets }) => {
   // filter placeholder
   const [placeholder, setPlaceholder] = useState('Filter By')
 
-  
   const [adminAccoutn, setAdminAccount] = useState({
     username: '',
     password: '',
@@ -159,12 +158,9 @@ const Requests: NextPage<Props> = ({ users, residents, tickets }) => {
       </Header>
 
       <Main>
-        <section className="h-full grid lg:grid-cols-[auto,1fr]">
+        <section className="h-screen overflow-hidden grid lg:grid-cols-[auto,1fr]">
           <SidePanel image="\images\admin.png" admin={true} />
           <section className="grid grid-rows-[auto,auto,auto,1fr] gap-8 px-10 py-7">
-            <div className="absolute w-96 h-96 lg:w-[450px] lg:h-[450px] top-[50%] bottom-[50%] -translate-y-[50%] left-[50%] right-[50%] -translate-x-[50%] -z-50 grid justify-items-center items-center opacity-30">
-              <Image src="/images/logo.png" layout="fill" objectFit="cover" />
-            </div>
             <h1 className="font-semibold tracking-wide">Requests</h1>
             <div className="grid lg:grid-cols-[1fr,auto] gap-5 lg:gap-10">
               <Search input={input} setInput={setInput} />
@@ -181,12 +177,13 @@ const Requests: NextPage<Props> = ({ users, residents, tickets }) => {
             </h4>
 
             {/* table */}
-            <div className="overflow-hidden">
+            <div className="h-[470px] overflow-hidden">
               {/* default datas */}
               {input === '' && placeholder === 'Filter By' && (
                 <Table>
                   {/* headers */}
                   <TableHeaders>
+                    <TableHeader name="Request ID" />
                     <TableHeader name="Full Name" />
                     <TableHeader name="Type" />
                     <TableHeader name="Request Date" />
@@ -196,9 +193,10 @@ const Requests: NextPage<Props> = ({ users, residents, tickets }) => {
                   </TableHeaders>
 
                   {/* rows */}
-                  <div className="flex flex-col">
-                    {tickets!.map((ticket, index) => (
-                      <TableRows key={index}>
+                  <div className="overflow-scroll">
+                    {tickets!.map((ticket) => (
+                      <TableRows key={ticket.id}>
+                        <TableRow name={ticket.id} />
                         <TableRow
                           name={`${ticket.user.profile?.firstName} ${ticket.user.profile?.lastName}`}
                         />
@@ -226,6 +224,7 @@ const Requests: NextPage<Props> = ({ users, residents, tickets }) => {
                 <Table>
                   {/* headers */}
                   <TableHeaders>
+                    <TableHeader name="Request ID" />
                     <TableHeader name="Full Name" />
                     <TableHeader name="Type" />
                     <TableHeader name="Request Date" />
@@ -235,19 +234,27 @@ const Requests: NextPage<Props> = ({ users, residents, tickets }) => {
                   </TableHeaders>
 
                   {/* rows */}
-                  <div className="flex flex-col ">
+                  <div>
                     {tickets
                       .filter(
                         (ticket) =>
-                          ticket.type.toLowerCase().includes(input) ||
-                          ticket.status.toLowerCase().includes(input) ||
+                          ticket.id
+                            .toLowerCase()
+                            .includes(input.toLowerCase()) ||
+                          ticket.type
+                            .toLowerCase()
+                            .includes(input.toLowerCase()) ||
+                          ticket.status
+                            .toLowerCase()
+                            .includes(input.toLowerCase()) ||
                           moment(ticket.createAt)
                             .format('LL')
                             .toLowerCase()
-                            .includes(input)
+                            .includes(input.toLowerCase())
                       )
                       .map((ticket) => (
                         <TableRows key={ticket.id}>
+                          <TableRow name={ticket.id} />
                           <TableRow
                             name={`${ticket.user.profile?.firstName} ${ticket.user.profile?.lastName}`}
                           />
@@ -278,6 +285,8 @@ const Requests: NextPage<Props> = ({ users, residents, tickets }) => {
                 <Table>
                   {/* headers */}
                   <TableHeaders>
+                    <TableHeader name="Request ID" />
+
                     <TableHeader name="Full Name" />
                     <TableHeader name="Type" />
                     <TableHeader name="Request Date" />
@@ -287,7 +296,7 @@ const Requests: NextPage<Props> = ({ users, residents, tickets }) => {
                   </TableHeaders>
 
                   {/* rows */}
-                  <div className="flex flex-col ">
+                  <div>
                     {tickets!
                       .filter(
                         (ticket) =>
@@ -298,15 +307,23 @@ const Requests: NextPage<Props> = ({ users, residents, tickets }) => {
                       )
                       .filter(
                         (ticket) =>
-                          ticket.type.toLowerCase().includes(input) ||
-                          ticket.status.toLowerCase().includes(input) ||
+                          ticket.id
+                            .toLowerCase()
+                            .includes(input.toLowerCase()) ||
+                          ticket.type
+                            .toLowerCase()
+                            .includes(input.toLowerCase()) ||
+                          ticket.status
+                            .toLowerCase()
+                            .includes(input.toLowerCase()) ||
                           ticket.createAt
                             .toString()
                             .toLowerCase()
-                            .includes(input)
+                            .includes(input.toLowerCase())
                       )
                       .map((ticket) => (
                         <TableRows key={ticket.id}>
+                          <TableRow name={ticket.id} />
                           <TableRow
                             name={`${ticket.user.profile?.firstName} ${ticket.user.profile?.lastName}`}
                           />
@@ -337,6 +354,8 @@ const Requests: NextPage<Props> = ({ users, residents, tickets }) => {
                 <Table>
                   {/* headers */}
                   <TableHeaders>
+                    <TableHeader name="Request ID" />
+
                     <TableHeader name="Full Name" />
                     <TableHeader name="Type" />
                     <TableHeader name="Request Date" />
@@ -346,7 +365,7 @@ const Requests: NextPage<Props> = ({ users, residents, tickets }) => {
                   </TableHeaders>
 
                   {/* rows */}
-                  <div className="flex flex-col">
+                  <div>
                     {tickets!
                       .filter(
                         (ticket) =>
@@ -357,6 +376,7 @@ const Requests: NextPage<Props> = ({ users, residents, tickets }) => {
                       )
                       .map((ticket) => (
                         <TableRows key={ticket.id}>
+                          <TableRow name={ticket.id} />
                           <TableRow
                             name={`${ticket.user.profile?.firstName} ${ticket.user.profile?.lastName}`}
                           />
@@ -409,6 +429,9 @@ export const getServerSideProps: GetServerSideProps = async () => {
   })
 
   const tickets = await prisma.ticket.findMany({
+    orderBy: {
+      createAt: 'desc',
+    },
     include: {
       user: {
         include: {

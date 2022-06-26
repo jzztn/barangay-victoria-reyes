@@ -44,7 +44,6 @@ const Registrations: NextPage<Props> = ({ users, residents }) => {
 
   const { logout } = useAdminStore()
 
-  
   const [adminAccoutn, setAdminAccount] = useState({
     username: '',
     password: '',
@@ -107,7 +106,7 @@ const Registrations: NextPage<Props> = ({ users, residents }) => {
       </div>
     )
   }
-  
+
   return (
     <section className="h-screen grid grid-rows-[auto,1fr]">
       <Header>
@@ -152,9 +151,6 @@ const Registrations: NextPage<Props> = ({ users, residents }) => {
         <section className="h-full grid lg:grid-cols-[auto,1fr]">
           <SidePanel image="\images\admin.png" admin={true} />
           <section className="grid grid-rows-[auto,auto,auto,1fr] gap-8 px-10 py-7">
-            <div className="absolute w-96 h-96 lg:w-[450px] lg:h-[450px] top-[50%] bottom-[50%] -translate-y-[50%] left-[50%] right-[50%] -translate-x-[50%] -z-50 grid justify-items-center items-center opacity-30">
-              <Image src="/images/logo.png" layout="fill" objectFit="cover" />
-            </div>
             <h1 className="font-semibold tracking-wide">Registrations</h1>
 
             <Search input={input} setInput={setInput} />
@@ -182,6 +178,7 @@ const Registrations: NextPage<Props> = ({ users, residents }) => {
                     <TableHeader name="Birthplace" />
                     <TableHeader name="Address" />
                     <TableHeader name="Started Year" />
+                    <TableHeader name="Proof of Residency" />
                     <TableHeader name="Homeowner" />
                     <TableHeader name="Voter" />
                     <TableHeader name="Approval" />
@@ -204,13 +201,17 @@ const Registrations: NextPage<Props> = ({ users, residents }) => {
                           <TableRow
                             name={moment(record.startedAt).format('LL')}
                           />
+                          <TableRow name={'meralcobill.jpg'} />
                           <TableRow name={record.homeowner.toString()} />
                           <TableRow name={record.voter.toString()} />
-                          <TableStatus
-                            admin={true}
-                            ticketId={user.id}
-                            status={'Pending'}
-                          />
+                          <div className="flex tems-center gap-3">
+                            <button className="bg-primary text-white px-4 py-2 rounded-md text-xs">
+                              Approved
+                            </button>
+                            <button className="bg-red-700 text-white px-4 py-2 rounded-md text-xs">
+                              Declined
+                            </button>
+                          </div>
                         </TableRows>
                       ))
                     })}
@@ -232,6 +233,7 @@ const Registrations: NextPage<Props> = ({ users, residents }) => {
                     <TableHeader name="Address" />
                     <TableHeader name="Started Year" />
                     <TableHeader name="Homeowner" />
+                    <TableHeader name="Proof of Residency" />
                     <TableHeader name="Voter" />
                     <TableHeader name="Approval" />
                   </TableHeaders>
@@ -242,27 +244,45 @@ const Registrations: NextPage<Props> = ({ users, residents }) => {
                       return user
                         .records!.filter(
                           (record) =>
-                            record.id.toLowerCase().includes(input) ||
-                            record.firstName.toLowerCase().includes(input) ||
-                            record.middleName.toLowerCase().includes(input) ||
-                            record.lastName.toLowerCase().includes(input) ||
-                            record.address.toLowerCase().includes(input) ||
-                            record.birthplace.toLowerCase().includes(input) ||
-                            record.birthdate.toLowerCase().includes(input) ||
-                            record.gender.toLowerCase().includes(input) ||
-                            record.contact.toLowerCase().includes(input) ||
+                            record.id
+                              .toLowerCase()
+                              .includes(input.toLowerCase()) ||
+                            record.firstName
+                              .toLowerCase()
+                              .includes(input.toLowerCase()) ||
+                            record.middleName
+                              .toLowerCase()
+                              .includes(input.toLowerCase()) ||
+                            record.lastName
+                              .toLowerCase()
+                              .includes(input.toLowerCase()) ||
+                            record.address
+                              .toLowerCase()
+                              .includes(input.toLowerCase()) ||
+                            record.birthplace
+                              .toLowerCase()
+                              .includes(input.toLowerCase()) ||
+                            record.birthdate
+                              .toLowerCase()
+                              .includes(input.toLowerCase()) ||
+                            record.gender
+                              .toLowerCase()
+                              .includes(input.toLowerCase()) ||
+                            record.contact
+                              .toLowerCase()
+                              .includes(input.toLowerCase()) ||
                             record.homeowner
                               .toString()
                               .toLowerCase()
-                              .includes(input) ||
+                              .includes(input.toLowerCase()) ||
                             record.voter
                               .toString()
                               .toLowerCase()
-                              .includes(input) ||
+                              .includes(input.toLowerCase()) ||
                             record.startedAt
                               .toString()
                               .toLowerCase()
-                              .includes(input)
+                              .includes(input.toLowerCase())
                         )
                         .map((record) => (
                           <TableRows key={record.id}>
@@ -278,13 +298,17 @@ const Registrations: NextPage<Props> = ({ users, residents }) => {
                             <TableRow
                               name={moment(record.startedAt).format('LL')}
                             />
+                            <TableRow name={'meralcobill.jpg'} />
                             <TableRow name={record.homeowner.toString()} />
                             <TableRow name={record.voter.toString()} />
-                            <TableStatus
-                              admin={true}
-                              ticketId={user.id}
-                              status={'Pending'}
-                            />
+                            <div className="flex items-center gap-3">
+                              <button className="bg-primary text-white px-4 py-2 rounded-md text-xs">
+                                Approved
+                              </button>
+                              <button className="bg-red-700 text-white px-4 py-2 rounded-md text-xs">
+                                Declined
+                              </button>
+                            </div>
                           </TableRows>
                         ))
                     })}

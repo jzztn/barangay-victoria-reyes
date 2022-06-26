@@ -1,6 +1,11 @@
 import { Prisma } from '@prisma/client'
 import moment from 'moment'
-import type { GetServerSideProps, GetStaticPaths, GetStaticProps, NextPage } from 'next'
+import type {
+  GetServerSideProps,
+  GetStaticPaths,
+  GetStaticProps,
+  NextPage,
+} from 'next'
 import { signOut } from 'next-auth/react'
 import { useState } from 'react'
 import prisma from '../../../adapters/prisma'
@@ -57,10 +62,6 @@ const Notifications: NextPage<Props> = ({ user }) => {
                   name: 'Profile',
                   link: `/user/${user.email.split('@')[0]}/profile`,
                 },
-                {
-                  name: 'Payment',
-                  link: `/user/${user.email.split('@')[0]}/payment`,
-                },
               ]}
             />
           </NavigationBar>
@@ -85,10 +86,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
             name={user.email.split('@')[0]}
             admin={false}
           />
-          <section className="grid grid-rows-[auto,auto,auto,1fr] gap-8 px-10 py-7">
-            <div className="absolute w-96 h-96 lg:w-[450px] lg:h-[450px] top-[50%] bottom-[50%] -translate-y-[50%] left-[50%] right-[50%] -translate-x-[50%] -z-50 grid justify-items-center items-center opacity-30">
-              <Image src="/images/logo.png" layout="fill" objectFit="cover" />
-            </div>
+          <section className="h-screen overflow-hidden grid grid-rows-[auto,auto,auto,1fr] gap-8 px-10 py-7">
             <h1 className="font-semibold tracking-wide">Notifications</h1>
             <div className="grid lg:grid-cols-[1fr,auto] gap-5 lg:gap-10">
               <Search input={input} setInput={setInput} />
@@ -105,12 +103,13 @@ const Notifications: NextPage<Props> = ({ user }) => {
             </h4>
 
             {/* table */}
-            <div className="overflow-hidden">
+            <div className="h-[470px] overflow-hidden">
               {/* default datas */}
               {input === '' && placeholder === 'Filter By' && (
                 <Table>
                   {/* headers */}
                   <TableHeaders>
+                    <TableHeader name="Request ID" />
                     <TableHeader name="Full Name" />
                     <TableHeader name="Type" />
                     <TableHeader name="Request Date" />
@@ -120,9 +119,10 @@ const Notifications: NextPage<Props> = ({ user }) => {
                   </TableHeaders>
 
                   {/* rows */}
-                  <div className="flex flex-col">
-                    {user.tickets!.map((request, index) => (
-                      <TableRows key={index}>
+                  <div>
+                    {user.tickets!.map((request) => (
+                      <TableRows key={request.id}>
+                        <TableRow name={request.id} />
                         <TableRow name={user.name} />
                         <TableRow
                           name={
@@ -147,6 +147,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
                 <Table>
                   {/* headers */}
                   <TableHeaders>
+                    <TableHeader name="Request ID" />
                     <TableHeader name="Full Name" />
                     <TableHeader name="Type" />
                     <TableHeader name="Request Date" />
@@ -156,19 +157,28 @@ const Notifications: NextPage<Props> = ({ user }) => {
                   </TableHeaders>
 
                   {/* rows */}
-                  <div className="flex flex-col">
+                  <div>
                     {user
                       .tickets!.filter(
                         (request) =>
-                          request.type.toLowerCase().includes(input) ||
-                          request.status.toLowerCase().includes(input) ||
+                          request.id
+                            .toLowerCase()
+                            .includes(input.toLowerCase()) ||
+                          request.type
+                            .toLowerCase()
+                            .includes(input.toLowerCase()) ||
+                          request.status
+                            .toLowerCase()
+                            .includes(input.toLowerCase()) ||
                           moment(request.createAt)
                             .format('LL')
                             .toLowerCase()
-                            .includes(input)
+                            .includes(input.toLowerCase())
                       )
-                      .map((request, index) => (
-                        <TableRows key={index}>
+                      .map((request) => (
+                        <TableRows key={request.id}>
+                          <TableRow name={request.id} />
+
                           <TableRow name={user.name} />
                           <TableRow
                             name={
@@ -196,6 +206,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
                 <Table>
                   {/* headers */}
                   <TableHeaders>
+                    <TableHeader name="Request ID" />
                     <TableHeader name="Full Name" />
                     <TableHeader name="Type" />
                     <TableHeader name="Request Date" />
@@ -205,7 +216,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
                   </TableHeaders>
 
                   {/* rows */}
-                  <div className="flex flex-col">
+                  <div>
                     {user
                       .tickets!.filter(
                         (request) =>
@@ -217,15 +228,24 @@ const Notifications: NextPage<Props> = ({ user }) => {
                       )
                       .filter(
                         (request) =>
-                          request.type.toLowerCase().includes(input) ||
-                          request.status.toLowerCase().includes(input) ||
+                          request.id
+                            .toLowerCase()
+                            .includes(input.toLowerCase()) ||
+                          request.type
+                            .toLowerCase()
+                            .includes(input.toLowerCase()) ||
+                          request.status
+                            .toLowerCase()
+                            .includes(input.toLowerCase()) ||
                           request.createAt
                             .toString()
                             .toLowerCase()
-                            .includes(input)
+                            .includes(input.toLowerCase())
                       )
-                      .map((request, index) => (
-                        <TableRows key={index}>
+                      .map((request) => (
+                        <TableRows key={request.id}>
+                          <TableRow name={request.id} />
+
                           <TableRow name={user.name} />
                           <TableRow
                             name={
@@ -253,6 +273,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
                 <Table>
                   {/* headers */}
                   <TableHeaders>
+                    <TableHeader name="Request ID" />
                     <TableHeader name="Full Name" />
                     <TableHeader name="Type" />
                     <TableHeader name="Request Date" />
@@ -262,7 +283,7 @@ const Notifications: NextPage<Props> = ({ user }) => {
                   </TableHeaders>
 
                   {/* rows */}
-                  <div className="flex flex-col">
+                  <div>
                     {user
                       .tickets!.filter(
                         (request) =>
@@ -272,8 +293,10 @@ const Notifications: NextPage<Props> = ({ user }) => {
                             .format('LL')
                             .toLowerCase() === placeholder
                       )
-                      .map((request, index) => (
-                        <TableRows key={index}>
+                      .map((request) => (
+                        <TableRows key={request.id}>
+                          <TableRow name={request.id} />
+
                           <TableRow name={user.name} />
                           <TableRow
                             name={
@@ -314,7 +337,11 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         where: { withId: null },
         include: { members: true },
       },
-      tickets: true,
+      tickets: {
+        orderBy: {
+          createAt: 'desc',
+        },
+      }
     },
   })
 
@@ -326,25 +353,3 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   }
 }
 
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   const users = await prisma.user.findMany({
-//     include: {
-//       profile: true,
-//       records: {
-//         where: { withId: null },
-//         include: { members: true },
-//       },
-//     },
-//   })
-
-//   const paths = users.map((user) => {
-//     return {
-//       params: { username: String(user.email!.split('@')[0]) },
-//     }
-//   })
-
-//   return {
-//     paths,
-//     fallback: 'blocking',
-//   }
-// }
