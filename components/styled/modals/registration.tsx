@@ -206,26 +206,45 @@ const Registration = ({ user }: IProps) => {
               setInputField={setInputField}
               fieldName="startedAt"
             />
+
             <div className="flex gap-10">
-              <Field
-                type="checkbox"
-                label="HomeOwner"
-                value={inputField.homeowner}
-                inputField={inputField}
-                setInputField={setInputField}
-                fieldName="homeowner"
-              />
-              <Field
-                type="checkbox"
-                label="Registered Voter"
-                value={inputField.voter}
-                inputField={inputField}
-                setInputField={setInputField}
-                fieldName="voter"
-              />
+              {/* homeowner */}
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  className="border-[1px] border-gray/50 rounded-md py-3 w-full outline-none bg-white"
+                  onChange={(e) =>
+                    setInputField({
+                      ...inputField,
+                      homeowner: e.target.checked,
+                    })
+                  }
+                />
+                <h2 className="text-xs lg:text-sm font-medum tracking-wide whitespace-nowrap">
+                  Homeowner
+                </h2>
+              </div>
+              
+              {/* registerd voter */}
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  className="border-[1px] border-gray/50 rounded-md py-3 w-full outline-none bg-white"
+                  onChange={(e) =>
+                    setInputField({
+                      ...inputField,
+                      voter: e.target.checked,
+                    })
+                  }
+                />
+                <h2 className="text-xs lg:text-sm font-medum tracking-wide whitespace-nowrap">
+                  Registered Voter
+                </h2>
+              </div>
             </div>
           </div>
-          <div className='flex flex-col gap-6'>
+
+          <div className="flex flex-col gap-6">
             {/* proof of Residency */}
             <div className="grid gap-2">
               <h2 className="text-xs lg:text-sm font-medium tracking-wide">
