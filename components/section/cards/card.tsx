@@ -76,7 +76,7 @@ const Card = ({ title, paragraph, request, type, id, amount }: IProps) => {
                   handler={() => setIsOpen(false)}
                 />
               </div>
-              <div className="absolute w-96 h-96 lg:w-[300px] lg:h-[300px] top-[50%] bottom-[50%] -translate-y-[50%] left-[50%] right-[50%] -translate-x-[50%] z-50 grid justify-items-center items-center opacity-20">
+              <div className="absolute w-[200px] h-[200px] lg:w-[300px] lg:h-[300px] top-[50%] bottom-[50%] -translate-y-[50%] left-[50%] right-[50%] -translate-x-[50%] z-50 grid justify-items-center items-center opacity-20">
                 <Image src="/images/logo.png" layout="fill" objectFit="cover" />
               </div>
             </div>
