@@ -165,9 +165,7 @@ const Registration = ({ user }: IProps) => {
               type="date"
               label="Birthday"
               icon={CalendarIcon}
-              value={moment(user.profile?.birthdate)
-                .format()
-                .slice(0, 10)}
+              value={moment(user.profile?.birthdate).format().slice(0, 10)}
               inputField={inputField}
               setInputField={setInputField}
               fieldName="birthdate"
@@ -227,9 +225,21 @@ const Registration = ({ user }: IProps) => {
               />
             </div>
           </div>
+          <div className='flex flex-col gap-6'>
+            {/* proof of Residency */}
+            <div className="grid gap-2">
+              <h2 className="text-xs lg:text-sm font-medium tracking-wide">
+                Proof of Residency
+              </h2>
 
-          {/* members */}
-          <div>
+              <input
+                type="file"
+                className="border-[1px] border-gray/50 rounded-md py-2 w-full outline-none pl-4"
+              />
+            </div>
+
+            {/* members */}
+
             <Members inputField={inputField} setInputField={setInputField} />
           </div>
         </Fields>
@@ -245,7 +255,7 @@ const Registration = ({ user }: IProps) => {
             label="Register"
             color={true}
             handler={() => {
-              updateUserAuthorization({key:"authorized", value:false})
+              updateUserAuthorization({ key: 'authorized', value: false })
               createRecord({ record: inputField })
               setIsOpen(false)
               router.push(`/user/${user.email.split('@')[0]}`)
