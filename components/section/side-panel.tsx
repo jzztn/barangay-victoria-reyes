@@ -42,13 +42,6 @@ const SidePanel = ({ image, name, admin }: IProps) => {
                 color={false}
                 link={`/user/${name}/profile`}
               />
-              <Icon
-                Type={CurrencyDollarIcon}
-                circleSize="w-10 h-10"
-                iconSize="w-5 h-5"
-                color={false}
-                link={`/user/${name}/payment`}
-              />
             </div>
 
             <div className="w-9 h-9 rounded-full overflow-hidden">
