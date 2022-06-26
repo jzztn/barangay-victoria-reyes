@@ -190,7 +190,7 @@ const Profile: NextPage<Props> = ({ user }) => {
                     <input
                       type="date"
                       value={moment(user.profile?.birthdate)
-                        .format()
+                        .format('LL')
                         .slice(0, 10)}
                       onChange={(e) =>
                         setInputField({
